@@ -1,0 +1,257 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>STLFLIX - Carrito y Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#747c87",
+                      "on-secondary-fixed": "#001d33",
+                      "on-primary-fixed": "#191c22",
+                      "tertiary-fixed-dim": "#bfc7d3",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary": "#003354",
+                      "secondary-container": "#00a2fd",
+                      "on-error": "#690005",
+                      "surface-container": "#1b2027",
+                      "surface-container-low": "#171c23",
+                      "secondary-fixed": "#cfe5ff",
+                      "inverse-surface": "#dee2ec",
+                      "outline-variant": "#45474b",
+                      "tertiary": "#bfc7d3",
+                      "primary": "#c4c6cf",
+                      "on-tertiary": "#29313a",
+                      "surface-container-high": "#252a32",
+                      "secondary-fixed-dim": "#98cbff",
+                      "primary-container": "#0b0e14",
+                      "on-primary": "#2e3037",
+                      "on-tertiary-fixed": "#141c25",
+                      "surface": "#0f141b",
+                      "secondary": "#98cbff",
+                      "outline": "#909095",
+                      "on-tertiary-fixed-variant": "#404751",
+                      "surface-tint": "#c4c6cf",
+                      "inverse-primary": "#5c5e66",
+                      "primary-fixed": "#e1e2eb",
+                      "on-background": "#dee2ec",
+                      "surface-container-lowest": "#090f15",
+                      "tertiary-fixed": "#dbe3ef",
+                      "surface-container-highest": "#30353d",
+                      "on-surface-variant": "#c6c6cb",
+                      "surface-bright": "#343941",
+                      "inverse-on-surface": "#2c3138",
+                      "on-secondary-fixed-variant": "#004a77",
+                      "on-surface": "#dee2ec",
+                      "tertiary-container": "#070f17",
+                      "on-primary-container": "#797b83",
+                      "primary-fixed-dim": "#c4c6cf",
+                      "on-secondary-container": "#003558",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#30353d",
+                      "background": "#0f141b",
+                      "on-primary-fixed-variant": "#44474e",
+                      "error-container": "#93000a",
+                      "surface-dim": "#0f141b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "xs": "8px",
+                      "margin-mobile": "16px",
+                      "sm": "16px",
+                      "lg": "40px",
+                      "xl": "64px",
+                      "base": "4px",
+                      "md": "24px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 4px theme('colors.secondary-container');
+        }
+        
+        .btn-primary {
+            background-color: #00A3FF; /* Direct hex as requested in style guide for this specific button type if it differs slightly from config, but we try to stick to config where possible. Using config secondary-container */
+            background-color: theme('colors.secondary-container');
+            color: #ffffff;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 12px theme('colors.secondary-container');
+            transform: scale(1.02);
+        }
+
+        .input-field {
+            background-color: theme('colors.surface-container');
+            border: 1px solid theme('colors.outline-variant');
+            color: theme('colors.on-surface');
+        }
+        .input-field:focus {
+            border-color: theme('colors.secondary-container');
+            box-shadow: 0 0 8px rgba(0, 162, 253, 0.2);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-background selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar: Suppressed per prompt instructions as this is a transactional checkout page -->
+<header class="w-full flex items-center justify-between px-margin-mobile md:px-margin-desktop py-4 bg-background/70 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">ALESSIOS3D</div>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">arrow_back</span>
+            Volver a la tienda
+        </a>
+</header>
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<div class="mb-lg">
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Finalizar Compra</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Revisa tu carrito y completa tus datos para procesar el pedido.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Carrito -->
+<div class="lg:col-span-7 flex flex-col gap-sm">
+<h2 class="font-headline-md text-headline-md border-b border-outline-variant pb-4 mb-4">Tu Carrito</h2>
+<!-- Product Items -->
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-lg border border-outline-variant">
+<img class="w-24 h-32 object-cover rounded-md bg-surface-container-highest" data-alt="A highly detailed, cinematic 3D render of a futuristic cyberpunk helmet prop, glowing with neon blue and pink accents, sitting on a dark metallic workbench. High contrast, sharp focus, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkZeYO-WxkRXjG-w2ZTdod5Cv-_Z5RM51uUzNgx2Q27tPkxsNHBo2gDX-4PSABlvfnWGvuXNyWsyWClEEGXIKCMWYMWc9ZUH2RmH2TEKfgdz8P2kcojwJTcSnic8Ys4Y9m5Im6syKZ-42qyqF-NQPjs_EWRPokn7RVhY8Q6Z5QQx4bOUyYeFBiF38LC4sLVXoCTYSr7rAiZkcXRlAES068yZJSCcD5eNLz4VWtYdvdk0NeiQ5rixGXFQ">
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg font-bold text-on-surface">Cyberpunk Helmet Prop</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Categoría: Props</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-secondary-container">$25.00</p>
+<button class="text-error hover:text-error-container text-sm mt-2 flex items-center justify-end w-full gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">delete</span> Quitar
+                        </button>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-lg border border-outline-variant">
+<img class="w-24 h-32 object-cover rounded-md bg-surface-container-highest" data-alt="A highly detailed, intricate 3D printable model of a medieval dragon figure, roaring, detailed scales, perched on a rock. Rendered in a dark, atmospheric setting with cinematic lighting highlighting the textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjuq2A0J6GBS8r9CBjDaYP3IH4EsK8nju2t_cfnNbsjTlbMOd1fyxFdqKeU49TzXXGA41ITivu35rRd1SCwq7y-0b1iA44sEm0uoQKklFhSB7YBESlUse0Z68YreRK21lUhvVxx0ZUtfrSIG8B2UthHEMnINl_jVrndGfW9bpSWtiUqYAdFVdabBxgFvWndZ9QtwpeTKKgX6B800hJufryNiAvLPFip3kD9woDJJ39mKo3Y232bvoiWQ">
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg font-bold text-on-surface">Medieval Dragon Figure</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Categoría: RPG</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-secondary-container">$15.00</p>
+<button class="text-error hover:text-error-container text-sm mt-2 flex items-center justify-end w-full gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">delete</span> Quitar
+                        </button>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-lg border border-outline-variant">
+<img class="w-24 h-32 object-cover rounded-md bg-surface-container-highest" data-alt="A detailed 3D model render of an articulate action figure robot, sleek modern design, white and dark grey colors with bright blue emissive parts. Displayed in a studio lighting setup." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpgotVeGoCnu8FK2hxsQT8CDG37h7d4Z1N1M6_HkbrebMvtj47cUX177-DiG9sqT1mzUvgxg-s-xoFqthT3wwzJLrm04LxfboK0OaOCmbGiDryjw8jKiOKItX3FYkXsT7TNcD39mOWSEeXaCz-CCSAv2bNLqh0V8Q17IKuDGgKW4BP9JdG8Ysh_S0su6LMFNjEyAuvR9Q3eKsN79HTOKyyax0mCHzgECNqcWyd2KWe8j-pqifN3LXuDw">
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg font-bold text-on-surface">Articulate Mech Toy</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Categoría: Toys</p>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-secondary-container">$12.50</p>
+<button class="text-error hover:text-error-container text-sm mt-2 flex items-center justify-end w-full gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">delete</span> Quitar
+                        </button>
+</div>
+</div>
+</div>
+<!-- Checkout Form & Summary -->
+<div class="lg:col-span-5">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md sticky top-[100px]">
+<h2 class="font-headline-md text-headline-md mb-6">Resumen del Pedido</h2>
+<div class="space-y-3 mb-8 border-b border-outline-variant pb-6">
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span class="">Subtotal (3 items)</span>
+<span class="">$52.50</span>
+</div>
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span class="">Impuestos (calculados al final)</span>
+<span class="">--</span>
+</div>
+<div class="flex justify-between font-headline-md text-headline-md text-on-surface pt-4 border-t border-outline-variant">
+<span class="">Total</span>
+<span class="text-secondary-container">$52.50</span>
+</div>
+</div>
+<form class="space-y-4">
+<h3 class="font-body-lg text-body-lg font-bold text-on-surface mb-4">Datos de Contacto</h3>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1" for="name">Nombre Completo</label>
+<input class="input-field w-full rounded-md p-3 font-body-md text-body-md" id="name" placeholder="Ingresa tu nombre" type="text">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1" for="email">Correo Electrónico</label>
+<input class="input-field w-full rounded-md p-3 font-body-md text-body-md" id="email" placeholder="ejemplo@correo.com" type="email">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1" for="message">Mensaje o Notas del Pedido (Opcional)</label>
+<textarea class="input-field w-full rounded-md p-3 font-body-md text-body-md" id="message" placeholder="Instrucciones especiales..." rows="3"></textarea>
+</div>
+<button class="btn-primary w-full py-4 rounded-lg font-label-md text-label-md font-bold uppercase tracking-wider flex items-center justify-center gap-2 mt-6" type="button">
+                            Contactar por WhatsApp
+                            <span class="material-symbols-outlined">send</span>
+</button>
+</form>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component from JSON -->
+<footer class="grid grid-cols-1 md:grid-cols-4 gap-lg px-margin-mobile md:px-margin-desktop py-xl w-full bg-surface-container-lowest border-t border-outline-variant mt-xl">
+<div class="col-span-1 md:col-span-4 mb-4 flex justify-between items-center border-b border-outline-variant pb-6">
+<span class="font-headline-md text-headline-md text-on-surface">ALESSIOS3D</span>
+</div>
+<div class="flex flex-col gap-2">
+<a class="font-body-md text-body-md text-on-tertiary-container hover:text-on-surface hover:text-secondary opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-tertiary-container hover:text-on-surface hover:text-secondary opacity-80 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-2">
+<a class="font-body-md text-body-md text-on-tertiary-container hover:text-on-surface hover:text-secondary opacity-80 hover:opacity-100 transition-opacity" href="#">FAQ</a>
+<a class="font-body-md text-body-md text-on-tertiary-container hover:text-on-surface hover:text-secondary opacity-80 hover:opacity-100 transition-opacity" href="#">About Us</a>
+</div>
+<div class="col-span-1 md:col-span-2 text-right self-end mt-8 md:mt-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 STLFLIX. All rights reserved.</p>
+</div>
+</footer>
+
+
+</body></html>

@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>ALESSIOS3D — Impresiones 3D & Mates de Algarrobo</title>
+    <meta name="description" content="Tienda oficial ALESSIOS3D: Diseños e impresiones 3D de alta calidad y Mates de Algarrobo artesanales grabados y personalizados.">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#0f141b",
+                        "surface-dim": "#0f141b",
+                        "surface-bright": "#343941",
+                        "surface-container-lowest": "#090f15",
+                        "surface-container-low": "#171c23",
+                        "surface-container": "#1b2027",
+                        "surface-container-high": "#252a32",
+                        "surface-container-highest": "#30353d",
+                        "on-surface": "#dee2ec",
+                        "on-surface-variant": "#c6c6cb",
+                        "outline": "#909095",
+                        "outline-variant": "#45474b",
+                        "primary": "#c4c6cf",
+                        "on-primary": "#2e3037",
+                        "primary-container": "#0b0e14",
+                        "secondary": "#98cbff",
+                        "secondary-container": "#00a2fd",
+                        "on-secondary-container": "#003558",
+                        "tertiary": "#bfc7d3",
+                        "tertiary-container": "#070f17",
+                        "on-tertiary-container": "#747c87",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "background": "#0f141b",
+                        "on-background": "#dee2ec",
+                        "neon": "#00a2fd",
+                        "neon-dim": "#0077be",
+                        "wood": "#d97706",
+                        "wood-dark": "#78350f"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "0.75rem",
+                        xl: "1rem",
+                        "2xl": "1.5rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        gutter: "20px"
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "system-ui", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: #0f141b;
+            color: #dee2ec;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        ::selection { background-color: #00a2fd; color: #ffffff; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #171c23; }
+        ::-webkit-scrollbar-thumb { background: #45474b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00a2fd; }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #00a2fd 0%, #0077be 100%);
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 25px rgba(0,162,253,0.4);
+            transform: translateY(-2px);
+        }
+        .btn-wood {
+            background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-wood:hover {
+            box-shadow: 0 0 25px rgba(217,119,6,0.4);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            border: 1px solid #45474b;
+            color: #c6c6cb;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover, .btn-outline.active {
+            border-color: #00a2fd;
+            color: #00a2fd;
+            background-color: rgba(0,162,253,0.08);
+        }
+
+        /* Inputs */
+        .input-field {
+            background-color: #1b2027;
+            border: 1px solid #45474b;
+            color: #dee2ec;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #00a2fd;
+            box-shadow: 0 0 12px rgba(0,162,253,0.25);
+            outline: none;
+        }
+
+        /* Product Cards */
+        .product-card {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: #00a2fd;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,162,253,0.15);
+        }
+
+        /* Number Overlay for Carousel */
+        .number-bg {
+            font-size: 160px;
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(0, 162, 253, 0.18);
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Tab Visibility */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Top Nav Link Active */
+        .top-nav-tab.active {
+            color: #00a2fd;
+            border-bottom: 2px solid #00a2fd;
+            font-weight: 700;
+        }
+
+        /* Sidebar Link Active */
+        .sidebar-link.active {
+            color: #00a2fd;
+            background-color: rgba(0, 162, 253, 0.1);
+            border-left: 3px solid #00a2fd;
+        }
+
+        /* Desktop Main Content Responsive Framing Fix */
+        @media (min-width: 1024px) {
+            #main-content {
+                width: calc(100vw - 288px) !important;
+                max-width: calc(100vw - 288px) !important;
+            }
+            #main-content.collapsed {
+                margin-left: 80px !important;
+                width: calc(100vw - 80px) !important;
+                max-width: calc(100vw - 80px) !important;
+            }
+        }
+
+        /* Collapsed Mini Sidebar Styles */
+        #sidebar.collapsed {
+            width: 80px !important;
+        }
+        #sidebar.collapsed .sidebar-text,
+        #sidebar.collapsed .sidebar-banner,
+        #sidebar.collapsed .submenu-arrow {
+            display: none !important;
+        }
+        #sidebar.collapsed .sidebar-link {
+            justify-content: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        #sidebar.collapsed .sidebar-brand-box {
+            padding: 0.5rem !important;
+            justify-content: center !important;
+        }
+
+        /* Submenu Accordion Animation */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .submenu.open {
+            max-height: 200px;
+        }
+
+        /* Modal backdrop & animation */
+        #product-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #product-modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #product-modal:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Toast */
+        .toast {
+            animation: toast-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards, toast-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) 2.6s forwards;
+        }
+        @keyframes toast-in {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes toast-out {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased overflow-x-hidden">
+
+<!-- ==================== TOP NAVIGATION BAR ==================== -->
+<header class="bg-background/85 backdrop-blur-md border-b border-outline-variant fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop py-3 h-[72px]">
+    <!-- Left: Brand & Sidebar Desplegable Toggle -->
+    <div class="flex items-center gap-3">
+        <!-- Sidebar Toggle (Mobile & Desktop) -->
+        <button id="sidebar-toggle-btn" onclick="toggleDesktopSidebar()" class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface hover:text-neon transition-colors" title="Desplegar / Plegar Menú Lateral">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+        <a href="javascript:void(0)" onclick="switchTab('tab-inicio')" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-full overflow-hidden border border-neon/50 bg-black flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img src="images/logo.png" alt="ALESSIOS3D Logo" class="w-full h-full object-cover">
+            </div>
+            <div class="flex flex-col">
+                <span class="font-bold text-headline-md leading-none text-on-surface tracking-wide">ALESSIOS3D</span>
+                <span class="text-[10px] text-neon uppercase tracking-widest font-semibold mt-0.5">3D Prints & Algarrobo</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Center: 3 Main Tabs (Desktop) -->
+    <nav class="hidden md:flex items-center gap-8">
+        <button onclick="switchTab('tab-inicio')" id="nav-tab-inicio" class="top-nav-tab active text-label-md text-on-surface-variant hover:text-on-surface py-2 px-1 transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px]">storefront</span>
+            Inicio
+        </button>
+        <button onclick="switchTab('tab-catalogo')" id="nav-tab-catalogo" class="top-nav-tab text-label-md text-on-surface-variant hover:text-on-surface py-2 px-1 transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px]">grid_view</span>
+            Catálogo
+        </button>
+        <button onclick="switchTab('tab-checkout')" id="nav-tab-checkout" class="top-nav-tab text-label-md text-on-surface-variant hover:text-on-surface py-2 px-1 transition-all flex items-center gap-2 relative">
+            <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+            Carrito / Checkout
+            <span id="nav-cart-badge" class="ml-1 bg-neon text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+        </button>
+    </nav>
+
+    <!-- Right: Search Bar & Actions -->
+    <div class="flex items-center gap-3">
+        <!-- Search Input -->
+        <div class="hidden xl:flex items-center relative w-64">
+            <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px]">search</span>
+            <input type="text" id="global-search" oninput="handleSearch(this.value)" placeholder="Buscar 3D o Mates..." class="w-full bg-surface-container border border-outline-variant rounded-full py-1.5 pl-9 pr-4 text-xs text-on-surface focus:outline-none focus:border-neon">
+        </div>
+
+        <!-- Quick Cart Icon -->
+        <button onclick="switchTab('tab-checkout')" class="relative p-2.5 rounded-full bg-surface-container hover:bg-surface-bright text-on-surface transition-all">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="header-cart-count" class="absolute -top-1 -right-1 bg-neon text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
+        <!-- Direct WhatsApp Button -->
+        <a href="https://wa.me/5491100000000?text=Hola%20ALESSIOS3D,%20quiero%20hacer%20una%20consulta" target="_blank" class="hidden sm:flex btn-primary px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">chat</span>
+            WhatsApp
+        </a>
+    </div>
+</header>
+
+<!-- ==================== MAIN WRAPPER WITH SIDEBAR ==================== -->
+<div class="flex flex-1 pt-[72px] overflow-x-hidden max-w-full">
+
+    <!-- ==================== SIDEBAR (DESPLEGABLE / COLLAPSIBLE) ==================== -->
+    <aside id="sidebar" class="fixed left-0 top-[72px] h-[calc(100vh-72px)] w-72 bg-surface-container-low border-r border-outline-variant hidden lg:flex flex-col py-5 overflow-y-auto z-40 transition-all duration-300">
+        
+        <!-- Sidebar Brand & Toggle Header -->
+        <div class="px-5 mb-5">
+            <div class="sidebar-brand-box p-3 rounded-2xl bg-surface-container border border-outline-variant/60 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full border border-neon/40 object-cover flex-shrink-0">
+                    <div class="sidebar-text">
+                        <h4 class="text-xs font-bold text-on-surface">ALESSIOS3D</h4>
+                        <p class="text-[10px] text-on-surface-variant">Menú Desplegable</p>
+                    </div>
+                </div>
+                <!-- Mini Collapse Arrow Button -->
+                <button onclick="toggleDesktopSidebar()" class="sidebar-text text-on-surface-variant hover:text-neon p-1 rounded-lg hover:bg-surface-container-high transition-colors" title="Plegar Sidebar">
+                    <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Categories Section Header -->
+        <div class="sidebar-text px-5 mb-2">
+            <h3 class="text-[11px] font-bold tracking-wider text-on-surface-variant uppercase">Categorías</h3>
+            <p class="text-[11px] text-on-tertiary-container">Filtros y subcategorías desplegables</p>
+        </div>
+
+        <!-- Navigation Links with Submenus -->
+        <nav class="flex-1 flex flex-col gap-1 px-3">
+            
+            <!-- Todos los Productos -->
+            <button onclick="filterByCategory('all')" class="sidebar-link active flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="all" title="Todos los productos">
+                <span class="material-symbols-outlined text-[20px] text-neon flex-shrink-0">apps</span>
+                <span class="sidebar-text font-semibold flex-1">Todos los Productos</span>
+            </button>
+
+            <!-- Impresiones 3D (Desplegable Acordeón) -->
+            <div>
+                <button onclick="toggleSubmenu('submenu-3d', this)" class="sidebar-link flex items-center justify-between text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="3d_prints" title="Impresiones 3D">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-[20px] text-neon flex-shrink-0">view_in_ar</span>
+                        <span class="sidebar-text">Impresiones 3D</span>
+                    </div>
+                    <span class="material-symbols-outlined text-[18px] submenu-arrow transition-transform">expand_more</span>
+                </button>
+                <!-- Subcategorías Desplegables -->
+                <div id="submenu-3d" class="submenu flex flex-col gap-1 pl-10 pr-2 pt-1">
+                    <button onclick="filterByCategory('3d_prints'); filterSubCategory('Props')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-neon py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-neon"></span> Cosplay & Props
+                    </button>
+                    <button onclick="filterByCategory('3d_prints'); filterSubCategory('Articulado')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-neon py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-neon"></span> Mechas Articulados
+                    </button>
+                    <button onclick="filterByCategory('3d_prints'); filterSubCategory('Resina')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-neon py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-neon"></span> Esculturas Resina
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mates de Algarrobo (Desplegable Acordeón) -->
+            <div>
+                <button onclick="toggleSubmenu('submenu-mates', this)" class="sidebar-link flex items-center justify-between text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="mates" title="Mates de Algarrobo">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-[20px] text-wood flex-shrink-0">local_cafe</span>
+                        <span class="sidebar-text">Mates de Algarrobo</span>
+                    </div>
+                    <span class="material-symbols-outlined text-[18px] submenu-arrow transition-transform">expand_more</span>
+                </button>
+                <!-- Subcategorías Desplegables -->
+                <div id="submenu-mates" class="submenu flex flex-col gap-1 pl-10 pr-2 pt-1">
+                    <button onclick="filterByCategory('mates'); filterSubCategory('Grabado')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-wood py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-wood"></span> Mates Grabados Láser
+                    </button>
+                    <button onclick="filterByCategory('mates'); filterSubCategory('Híbrido')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-wood py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-wood"></span> Mates Híbridos 3D
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sets Materos & Yerberas -->
+            <button onclick="filterByCategory('sets')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="sets" title="Sets Materos & Yerberas">
+                <span class="material-symbols-outlined text-[20px] text-yellow-400 flex-shrink-0">inventory_2</span>
+                <span class="sidebar-text">Sets Materos & Yerberas</span>
+            </button>
+
+            <!-- Props & RPG -->
+            <button onclick="filterByCategory('rpg_props')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="rpg_props" title="Props & RPG">
+                <span class="material-symbols-outlined text-[20px] text-purple-400 flex-shrink-0">swords</span>
+                <span class="sidebar-text">Props & RPG</span>
+            </button>
+
+            <!-- Decoración & Arte -->
+            <button onclick="filterByCategory('decoracion')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="decoracion" title="Decoración & Arte">
+                <span class="material-symbols-outlined text-[20px] text-emerald-400 flex-shrink-0">palette</span>
+                <span class="sidebar-text">Decoración & Arte</span>
+            </button>
+
+        </nav>
+
+        <!-- Custom Order Banner -->
+        <div class="sidebar-banner px-5 my-4">
+            <div class="p-3.5 rounded-2xl bg-gradient-to-br from-surface-container to-surface-container-high border border-neon/30 text-center">
+                <span class="material-symbols-outlined text-neon text-[24px] mb-1">design_services</span>
+                <h5 class="text-xs font-bold text-on-surface mb-1">¿Buscás algo a medida?</h5>
+                <p class="text-[10px] text-on-surface-variant mb-2.5">Imprimimos tu STL o grabamos tu mate a pedido.</p>
+                <a href="https://wa.me/5491100000000?text=Hola,%20quisiera%20cotizar%20un%20trabajo%20personalizado" target="_blank" class="btn-primary w-full py-1.5 rounded-xl text-[10px] font-bold inline-flex items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-[13px]">send</span> Cotizar Personalizado
+                </a>
+            </div>
+        </div>
+
+        <!-- Support Footer Links -->
+        <div class="sidebar-text px-4 pt-3 border-t border-outline-variant/60 flex flex-col gap-1 text-xs">
+            <a href="https://wa.me/5491100000000" target="_blank" class="flex items-center gap-3 text-on-surface-variant px-3 py-1.5 hover:text-neon transition-colors">
+                <span class="material-symbols-outlined text-[16px]">help</span> Soporte & Dudas
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+    <!-- ==================== MAIN CONTENT AREA ==================== -->
+    <main id="main-content" class="flex-1 lg:ml-72 min-h-screen flex flex-col w-full overflow-x-hidden transition-all duration-300">
+
+        <!-- ==================== TAB 1: INICIO (HOME) ==================== -->
+        <div id="tab-inicio" class="tab-content active w-full overflow-x-hidden">
+            
+            <!-- Hero Banner -->
+            <section class="relative bg-gradient-to-br from-surface-container-lowest via-background to-surface-container-low px-margin-mobile md:px-margin-desktop py-xl border-b border-outline-variant/40 overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-96 h-96 bg-neon/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div class="absolute right-1/3 -bottom-20 w-80 h-80 bg-wood/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+                <div class="max-w-[1200px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="xl:col-span-7 flex flex-col gap-6 z-10">
+                        <div class="inline-flex items-center gap-2 bg-surface-container border border-outline-variant/80 rounded-full px-4 py-1.5 w-fit">
+                            <span class="w-2 h-2 rounded-full bg-neon animate-pulse"></span>
+                            <span class="text-xs text-on-surface-variant font-semibold tracking-wide">Impresiones 3D & Mates de Algarrobo</span>
+                        </div>
+
+                        <h1 class="text-headline-xl md:text-[44px] xl:text-[48px] md:leading-[52px] xl:leading-[56px] font-black text-on-surface">
+                            Tecnología 3D &<br>
+                            <span class="bg-gradient-to-r from-wood via-amber-400 to-neon bg-clip-text text-transparent">Tradición Matera</span>
+                        </h1>
+
+                        <p class="text-body-lg text-on-surface-variant max-w-xl">
+                            Transformamos ideas en piezas únicas. Desde modelos 3D articulados y props coleccionables hasta Mates de Algarrobo tallados y personalizados.
+                        </p>
+
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchTab('tab-catalogo')" class="btn-primary px-7 py-3.5 rounded-xl text-sm font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">grid_view</span>
+                                Ver Catálogo Completo
+                            </button>
+                            <button onclick="filterByCategory('mates')" class="btn-wood px-7 py-3.5 rounded-xl text-sm font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">local_cafe</span>
+                                Mates de Algarrobo
+                            </button>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-outline-variant/50">
+                            <div>
+                                <h4 class="text-headline-lg font-bold text-neon">+500</h4>
+                                <p class="text-xs text-on-surface-variant">Modelos 3D</p>
+                            </div>
+                            <div>
+                                <h4 class="text-headline-lg font-bold text-wood">+1000</h4>
+                                <p class="text-xs text-on-surface-variant">Mates Entregados</p>
+                            </div>
+                            <div>
+                                <h4 class="text-headline-lg font-bold text-emerald-400">100%</h4>
+                                <p class="text-xs text-on-surface-variant">Personalizados</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual -->
+                    <div class="xl:col-span-5 relative flex justify-center">
+                        <div class="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden border border-outline-variant/80 bg-surface-container shadow-2xl flex items-center justify-center p-4">
+                            <img src="images/hero_banner.png" alt="Alessios3D Showcase" class="w-full h-full object-cover rounded-2xl">
+                            <div class="absolute bottom-4 left-4 right-4 bg-background/80 backdrop-blur-md p-3.5 rounded-xl border border-outline-variant/60 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="images/logo.png" alt="Logo" class="w-9 h-9 rounded-full border border-neon">
+                                    <div>
+                                        <h5 class="text-xs font-bold text-on-surface">Calidad Premium ALESSIOS3D</h5>
+                                        <p class="text-[10px] text-on-surface-variant">Envíos a todo el país</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-neon">verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Top Carousel Section -->
+            <section class="px-margin-mobile md:px-margin-desktop py-xl border-b border-outline-variant/40 overflow-hidden">
+                <div class="flex items-end justify-between mb-8">
+                    <div>
+                        <span class="text-xs text-neon uppercase tracking-widest font-bold">Destacados del mes</span>
+                        <h2 class="text-headline-xl text-on-surface mt-1">Los Más Pedidos</h2>
+                    </div>
+                    <button onclick="switchTab('tab-catalogo')" class="text-xs font-semibold text-neon hover:underline flex items-center gap-1">
+                        Ver todos <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </button>
+                </div>
+
+                <!-- Horizontal Carousel -->
+                <div class="flex gap-6 md:gap-8 overflow-x-auto pb-6 scroll-smooth snap-x">
+                    
+                    <!-- Top 1 -->
+                    <div class="flex-none w-[260px] sm:w-[280px] md:w-[320px] relative snap-start group cursor-pointer" onclick="openProductModal(1)">
+                        <span class="number-bg">1</span>
+                        <div class="relative z-10 aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container border border-outline-variant transition-all duration-300 group-hover:border-neon group-hover:scale-[1.02] shadow-lg">
+                            <img src="images/product_cyberpunk_helmet.png" alt="Cyberpunk Helmet" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent p-5 flex flex-col justify-end">
+                                <span class="text-[10px] text-neon uppercase tracking-wider font-bold">Impresión 3D</span>
+                                <h3 class="text-headline-md font-bold text-on-surface">Casco Cyberpunk Prop</h3>
+                                <p class="text-sm font-bold text-neon mt-1">$25.000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 2 -->
+                    <div class="flex-none w-[260px] sm:w-[280px] md:w-[320px] relative snap-start group cursor-pointer" onclick="openProductModal(9)">
+                        <span class="number-bg" style="color: rgba(217,119,6,0.2);">2</span>
+                        <div class="relative z-10 aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container border border-outline-variant transition-all duration-300 group-hover:border-wood group-hover:scale-[1.02] shadow-lg">
+                            <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?q=80&w=800&auto=format&fit=crop" alt="Mate Algarrobo 3 Estrellas" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent p-5 flex flex-col justify-end">
+                                <span class="text-[10px] text-wood uppercase tracking-wider font-bold">Mates de Algarrobo</span>
+                                <h3 class="text-headline-md font-bold text-on-surface">Mate Algarrobo "3 Estrellas"</h3>
+                                <p class="text-sm font-bold text-wood mt-1">$18.500</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 3 -->
+                    <div class="flex-none w-[260px] sm:w-[280px] md:w-[320px] relative snap-start group cursor-pointer" onclick="openProductModal(2)">
+                        <span class="number-bg">3</span>
+                        <div class="relative z-10 aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container border border-outline-variant transition-all duration-300 group-hover:border-neon group-hover:scale-[1.02] shadow-lg">
+                            <img src="images/product_medieval_dragon.png" alt="Dragon Medieval" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent p-5 flex flex-col justify-end">
+                                <span class="text-[10px] text-neon uppercase tracking-wider font-bold">Impresión 3D</span>
+                                <h3 class="text-headline-md font-bold text-on-surface">Dragón Medieval RPG</h3>
+                                <p class="text-sm font-bold text-neon mt-1">$15.000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 4 -->
+                    <div class="flex-none w-[260px] sm:w-[280px] md:w-[320px] relative snap-start group cursor-pointer" onclick="openProductModal(10)">
+                        <span class="number-bg" style="color: rgba(217,119,6,0.2);">4</span>
+                        <div class="relative z-10 aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container border border-outline-variant transition-all duration-300 group-hover:border-wood group-hover:scale-[1.02] shadow-lg">
+                            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop" alt="Set Matero Algarrobo" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent p-5 flex flex-col justify-end">
+                                <span class="text-[10px] text-wood uppercase tracking-wider font-bold">Mates & Yerberas</span>
+                                <h3 class="text-headline-md font-bold text-on-surface">Set Matero Imperial Complete</h3>
+                                <p class="text-sm font-bold text-wood mt-1">$32.000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Split Categories Feature -->
+            <section class="px-margin-mobile md:px-margin-desktop py-xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+                    
+                    <!-- Card 3D Printing -->
+                    <div class="p-8 rounded-3xl bg-gradient-to-br from-surface-container-low to-surface-container border border-neon/30 flex flex-col justify-between min-h-[280px]">
+                        <div>
+                            <span class="material-symbols-outlined text-neon text-[36px] mb-3">view_in_ar</span>
+                            <h3 class="text-headline-lg font-bold text-on-surface mb-2">Impresiones 3D</h3>
+                            <p class="text-body-md text-on-surface-variant">Figuras coleccionables, mechas articulados, props de películas, organizadores y piezas a pedido en PLA y Resina de alta resolución.</p>
+                        </div>
+                        <button onclick="filterByCategory('3d_prints')" class="btn-primary w-fit px-6 py-3 rounded-xl text-xs font-bold mt-6 inline-flex items-center gap-2">
+                            Explorar Modelos 3D
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <!-- Card Mates Algarrobo -->
+                    <div class="p-8 rounded-3xl bg-gradient-to-br from-surface-container-low to-surface-container border border-wood/40 flex flex-col justify-between min-h-[280px]">
+                        <div>
+                            <span class="material-symbols-outlined text-wood text-[36px] mb-3">local_cafe</span>
+                            <h3 class="text-headline-lg font-bold text-on-surface mb-2">Mates de Algarrobo</h3>
+                            <p class="text-body-md text-on-surface-variant">Madera seleccionada de algarrobo estacionado. Mates pulidos, curados, con virola labrada o grabados personalizados con láser e impresiones 3D.</p>
+                        </div>
+                        <button onclick="filterByCategory('mates')" class="btn-wood w-fit px-6 py-3 rounded-xl text-xs font-bold mt-6 inline-flex items-center gap-2">
+                            Explorar Mates
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ==================== TAB 2: CATÁLOGO ==================== -->
+        <div id="tab-catalogo" class="tab-content w-full p-margin-mobile md:p-margin-desktop overflow-x-hidden">
+            
+            <!-- Catalog Header & Search -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                    <span class="text-xs text-neon uppercase tracking-widest font-bold">Catálogo ALESSIOS3D</span>
+                    <h2 class="text-headline-xl text-on-surface mt-1">Explorar Todos los Productos</h2>
+                    <p class="text-body-md text-on-surface-variant">Hacé clic en cualquier producto para ver su descripción detallada y fotos.</p>
+                </div>
+                
+                <!-- Category Quick Filters Bar -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold active" onclick="filterByCategory('all')" data-btncat="all">Todos</button>
+                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold" onclick="filterByCategory('3d_prints')" data-btncat="3d_prints">Impresión 3D</button>
+                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold" onclick="filterByCategory('mates')" data-btncat="mates">Mates Algarrobo</button>
+                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold" onclick="filterByCategory('sets')" data-btncat="sets">Sets Materos</button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="catalog-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-gutter mb-xl">
+                <!-- Products dynamically rendered by JS -->
+            </div>
+
+            <!-- Empty Filter Result -->
+            <div id="catalog-empty" class="hidden text-center py-xl">
+                <span class="material-symbols-outlined text-[64px] text-on-surface-variant/40 mb-3">search_off</span>
+                <h3 class="text-headline-md text-on-surface">No se encontraron productos</h3>
+                <p class="text-body-md text-on-surface-variant">Probá con otro término de búsqueda o categoría.</p>
+            </div>
+
+        </div>
+
+        <!-- ==================== TAB 3: CARRITO & CHECKOUT ==================== -->
+        <div id="tab-checkout" class="tab-content w-full p-margin-mobile md:p-margin-desktop overflow-x-hidden">
+            
+            <div class="mb-8">
+                <span class="text-xs text-neon uppercase tracking-widest font-bold">Finalizar Pedido</span>
+                <h2 class="text-headline-xl text-on-surface mt-1">Carrito de Compras</h2>
+                <p class="text-body-md text-on-surface-variant">Revisá tus items y completá los datos para coordinar el envío por WhatsApp.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                
+                <!-- Items List -->
+                <div class="lg:col-span-7 flex flex-col gap-4">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-4">
+                        <h3 class="text-headline-md text-on-surface font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-neon">shopping_cart</span>
+                            Items Seleccionados
+                        </h3>
+                        <button onclick="clearCart()" class="text-xs text-error hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">delete_sweep</span> Vaciar Carrito
+                        </button>
+                    </div>
+
+                    <div id="checkout-cart-list" class="flex flex-col gap-3">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <div id="checkout-empty" class="hidden text-center py-xl bg-surface-container-low rounded-2xl border border-outline-variant">
+                        <span class="material-symbols-outlined text-[64px] text-on-surface-variant/40 mb-3">shopping_cart</span>
+                        <h3 class="text-headline-md text-on-surface mb-2">Tu carrito está vacío</h3>
+                        <p class="text-body-md text-on-surface-variant mb-6">Agregá impresiones 3D o Mates de Algarrobo desde el catálogo.</p>
+                        <button onclick="switchTab('tab-catalogo')" class="btn-primary px-6 py-3 rounded-xl text-xs font-bold inline-flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">grid_view</span> Ir al Catálogo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Order Summary Form -->
+                <div class="lg:col-span-5">
+                    <div class="bg-surface-container-low border border-outline-variant rounded-2xl p-6 sticky top-[90px]">
+                        <h3 class="text-headline-md font-bold text-on-surface mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-wood">receipt_long</span>
+                            Resumen del Pedido
+                        </h3>
+
+                        <div class="space-y-3 pb-6 border-b border-outline-variant text-sm">
+                            <div class="flex justify-between text-on-surface-variant">
+                                <span>Subtotal (<span id="cart-summary-qty">0</span> items)</span>
+                                <span id="cart-summary-subtotal" class="font-bold text-on-surface">$0</span>
+                            </div>
+                            <div class="flex justify-between text-on-surface-variant">
+                                <span>Envío / Coordinación</span>
+                                <span class="text-emerald-400 font-semibold">A convenir</span>
+                            </div>
+                            <div class="flex justify-between text-headline-md text-on-surface font-bold pt-3 border-t border-outline-variant">
+                                <span>Total</span>
+                                <span id="cart-summary-total" class="text-neon">$0</span>
+                            </div>
+                        </div>
+
+                        <!-- Customer Form -->
+                        <form id="whatsapp-checkout-form" onsubmit="return sendWhatsAppOrder(event)" class="space-y-4 pt-6">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Datos del Cliente</h4>
+                            
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-name">Nombre y Apellido *</label>
+                                <input type="text" id="cust-name" required placeholder="Ej: Lucas Pérez" class="input-field w-full rounded-xl p-3 text-xs">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-phone">Teléfono / WhatsApp *</label>
+                                <input type="tel" id="cust-phone" required placeholder="Ej: 11 1234-5678" class="input-field w-full rounded-xl p-3 text-xs">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-address">Localidad / Provincia *</label>
+                                <input type="text" id="cust-address" required placeholder="Ej: Córdoba Capital" class="input-field w-full rounded-xl p-3 text-xs">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-notes">Notas / Grabado Personalizado (Opcional)</label>
+                                <textarea id="cust-notes" rows="2" placeholder="Ej: Grabar iniciales L.P en el mate..." class="input-field w-full rounded-xl p-3 text-xs"></textarea>
+                            </div>
+
+                            <button type="submit" id="btn-send-whatsapp" class="btn-primary w-full py-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 mt-4 disabled:opacity-50">
+                                <span class="material-symbols-outlined text-[18px]">chat</span>
+                                Confirmar Pedido por WhatsApp
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ==================== FOOTER ==================== -->
+        <footer id="footer" class="bg-surface-container-lowest border-t border-outline-variant mt-24 md:mt-32 px-margin-mobile md:px-margin-desktop pt-16 pb-16 md:pt-24 md:pb-24">
+            <div class="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pt-2">
+                
+                <div class="col-span-1 md:col-span-2 flex flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <img src="images/logo.png" alt="ALESSIOS3D Logo" class="w-10 h-10 rounded-full border border-neon/50 object-cover">
+                        <span class="font-bold text-headline-md text-on-surface">ALESSIOS3D</span>
+                    </div>
+                    <p class="text-xs text-on-tertiary-container max-w-md">
+                        Especialistas en modelos e impresiones 3D personalizadas y Mates de Algarrobo artesanales con grabado láser y acabados premium.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-2.5 text-xs">
+                    <span class="font-bold text-on-surface mb-1">Navegación</span>
+                    <a href="javascript:void(0)" onclick="switchTab('tab-inicio')" class="text-on-tertiary-container hover:text-neon transition-colors">Inicio</a>
+                    <a href="javascript:void(0)" onclick="switchTab('tab-catalogo')" class="text-on-tertiary-container hover:text-neon transition-colors">Catálogo Completo</a>
+                    <a href="javascript:void(0)" onclick="switchTab('tab-checkout')" class="text-on-tertiary-container hover:text-neon transition-colors">Carrito & Checkout</a>
+                </div>
+
+                <div class="flex flex-col gap-2.5 text-xs">
+                    <span class="font-bold text-on-surface mb-1">Contacto</span>
+                    <a href="https://wa.me/5491100000000" target="_blank" class="text-on-tertiary-container hover:text-neon transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">chat</span> WhatsApp Oficial
+                    </a>
+                    <span class="text-on-tertiary-container">Envíos a todo el país</span>
+                </div>
+
+            </div>
+
+            <div class="max-w-[1200px] mx-auto pt-10 mt-12 pb-4 border-t border-outline-variant/40 flex flex-col sm:flex-row justify-between items-center text-xs text-on-surface-variant gap-4">
+                <p>© 2026 ALESSIOS3D. Todos los derechos reservados.</p>
+                <p>3D Prints & Mates de Algarrobo</p>
+            </div>
+        </footer>
+
+    </main>
+
+</div>
+
+<!-- ==================== DETALLE DE PRODUCTO (MODAL MODERNO) ==================== -->
+<div id="product-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md hidden">
+    <div class="relative w-full max-w-4xl max-h-[90vh] bg-surface-container-low border border-outline-variant rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row overflow-y-auto">
+        
+        <!-- Botón Cerrar -->
+        <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-background/80 border border-outline-variant text-on-surface hover:bg-neon hover:text-white flex items-center justify-center transition-all">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <!-- Galería de Fotos (Izquierda) -->
+        <div class="w-full md:w-1/2 p-6 bg-surface-container flex flex-col gap-4">
+            <div class="relative aspect-square w-full rounded-2xl overflow-hidden border border-outline-variant/60 bg-black flex items-center justify-center">
+                <img id="modal-main-img" src="" alt="Main Image" class="w-full h-full object-cover transition-all duration-300">
+                <span id="modal-badge" class="absolute top-3 left-3 text-[10px] font-bold px-3 py-1 rounded-full text-white bg-neon backdrop-blur-md"></span>
+            </div>
+            
+            <!-- Miniaturas adicionales -->
+            <div id="modal-thumbs" class="flex gap-3 overflow-x-auto pb-1">
+                <!-- Injected JS -->
+            </div>
+        </div>
+
+        <!-- Información y Detalles (Derecha) -->
+        <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between gap-6 bg-surface-container-low">
+            
+            <div class="space-y-4">
+                <!-- Header / Categoría & STL ID -->
+                <div class="flex items-center justify-between">
+                    <span id="modal-category" class="text-xs font-bold text-neon uppercase tracking-wider"></span>
+                    <span id="modal-stl-id" class="text-[11px] bg-surface-container px-2.5 py-1 rounded-full text-on-surface-variant border border-outline-variant"></span>
+                </div>
+
+                <!-- Título y Precio -->
+                <div>
+                    <h2 id="modal-title" class="text-headline-lg font-black text-on-surface leading-tight mb-2"></h2>
+                    <p id="modal-price" class="text-headline-xl font-bold text-neon"></p>
+                </div>
+
+                <!-- Botones de Acción Rápida -->
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                    <button id="modal-add-cart-btn" onclick="" class="btn-primary flex-1 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                        Añadir al Carrito
+                    </button>
+                    <button onclick="toggleBookmarkModal()" id="modal-bookmark-btn" class="p-3 rounded-xl border border-outline-variant bg-surface-container hover:border-neon text-on-surface transition-all flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+                    </button>
+                    <a id="modal-whatsapp-direct" href="#" target="_blank" class="btn-wood p-3 rounded-xl flex items-center justify-center text-white" title="Consultar por WhatsApp">
+                        <span class="material-symbols-outlined text-[20px]">chat</span>
+                    </a>
+                </div>
+
+                <!-- Descripción del Modelo -->
+                <div class="pt-4 border-t border-outline-variant/50 space-y-2">
+                    <h4 class="text-xs font-bold text-on-surface uppercase tracking-wider">DESCRIPCIÓN DEL PRODUCTO</h4>
+                    <p id="modal-full-desc" class="text-xs text-on-surface-variant leading-relaxed"></p>
+                </div>
+
+                <!-- Ajustes de Impresión 3D / Cuidado del Mate -->
+                <div class="pt-4 border-t border-outline-variant/50 space-y-2">
+                    <h4 class="text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-neon">settings</span>
+                        ESPECIFICACIONES TÉCNICAS & AJUSTES
+                    </h4>
+                    <ul id="modal-specs-list" class="space-y-1.5 text-xs text-on-surface-variant">
+                        <!-- Injected JS -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-[11px] text-on-tertiary-container pt-4 border-t border-outline-variant/40 flex items-center justify-between">
+                <span>Garantía de Calidad ALESSIOS3D</span>
+                <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">local_shipping</span> Envíos a todo el país
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Toast Notifications Container -->
+<div id="toast-container" class="fixed top-20 right-4 z-[60] flex flex-col gap-3 pointer-events-none"></div>
+
+<!-- ==================== JAVASCRIPT LOGIC ==================== -->
+<script>
+// ===== PRODUCTS DATABASE =====
+const PRODUCTS = [
+    {
+        id: 1,
+        name: "Casco Cyberpunk Prop 3D",
+        category: "3d_prints",
+        price: 25000,
+        image: "images/product_cyberpunk_helmet.png",
+        gallery: [
+            "images/product_cyberpunk_helmet.png",
+            "images/hero_banner.png",
+            "images/product_scifi_weapon.png"
+        ],
+        badge: "3D Print",
+        type: "3D",
+        stlId: "STL #1618",
+        desc: "Prop a escala real en PLA de alta resolución listo para cosplay. Diseño cibernético agresivo con acabados pulidos y estructura modular articulada.",
+        specs: [
+            "Recomendado para Impresoras FDM (PLA / PETG) y Resina.",
+            "Incluye archivos pre-sostenidos para impresión en resina.",
+            "Relleno sugerido: 15% a 20% Giroide para máxima resistencia.",
+            "Altura de capa: 0.16mm o 0.20mm para acabados lisos."
+        ]
+    },
+    {
+        id: 2,
+        name: "Dragón Medieval RPG",
+        category: "rpg_props",
+        price: 15000,
+        image: "images/product_medieval_dragon.png",
+        gallery: [
+            "images/product_medieval_dragon.png",
+            "images/product_anime_figure.png"
+        ],
+        badge: "Destacado",
+        type: "3D",
+        stlId: "STL #2041",
+        desc: "Barro, polvo, fuego y sueños rotos. Figura de dragón místico detallada a escala para juegos de mesa, RPG y pintores de miniaturas exigentes.",
+        specs: [
+            "Recomendado para Impresoras de Resina UV.",
+            "Modelo sólido y modelo hueco con agujeros de drenaje incluidos.",
+            "Pre-Sostenido probado sin fallos de impresión.",
+            "Escala original: 120mm de altura."
+        ]
+    },
+    {
+        id: 3,
+        name: "Mech Robot Articulado",
+        category: "3d_prints",
+        price: 12500,
+        image: "images/product_mech_robot.png",
+        gallery: [
+            "images/product_mech_robot.png",
+            "images/hero_banner.png"
+        ],
+        badge: "Popular",
+        type: "3D",
+        stlId: "STL #8920",
+        desc: "Figura articulada Print-in-Place (se imprime de una sola vez sin necesidad de ensamblar ni pegar piezas). Ideal como juguete o decoración de escritorio.",
+        specs: [
+            "Print-in-Place (sin soportes requeridos).",
+            "Sugerido 3 perímetros de pared para articulaciones firmes.",
+            "Compatible con PLA, ABS y PETG."
+        ]
+    },
+    {
+        id: 4,
+        name: "Figura Anime Warrior",
+        category: "3d_prints",
+        price: 18000,
+        image: "images/product_anime_figure.png",
+        gallery: [
+            "images/product_anime_figure.png",
+            "images/product_medieval_dragon.png"
+        ],
+        badge: "Nuevo",
+        type: "3D",
+        stlId: "STL #4412",
+        desc: "Escultura detallada estilo anime con textura realista de capa y espadas. Diseñada especialmente para coleccionistas y pintores de figuras.",
+        specs: [
+            "Impresión de alta precisión en Resina SLA/DLP.",
+            "Partes divididas para fácil pintura y ensamblaje con encastres perfectos.",
+            "Incluye base temática esculpida."
+        ]
+    },
+    {
+        id: 5,
+        name: "Blaster Sci-Fi Replica",
+        category: "rpg_props",
+        price: 22000,
+        image: "images/product_scifi_weapon.png",
+        gallery: [
+            "images/product_scifi_weapon.png",
+            "images/product_cyberpunk_helmet.png"
+        ],
+        badge: "Cosplay",
+        type: "3D",
+        stlId: "STL #7731",
+        desc: "Réplica utilitaria para eventos de cosplay y exhibición. Espacio interno diseñado para colocar luces LED y baterías.",
+        specs: [
+            "Diseño multipartes para camas de impresión estándar (220x220mm).",
+            "Requiere ensamblaje con pegamento cianocrilato.",
+            "Relleno recomendado: 15%."
+        ]
+    },
+    {
+        id: 9,
+        name: "Mate Algarrobo Escudo 3 Estrellas",
+        category: "mates",
+        price: 18500,
+        image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?q=80&w=800&auto=format&fit=crop",
+        gallery: [
+            "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop"
+        ],
+        badge: "Algarrobo",
+        type: "Mate",
+        stlId: "ART #009",
+        desc: "Mate artesanal fabricado en madera de algarrobo macizo estacionado. Grabado láser de alta definición con el escudo de las 3 estrellas y virola de aluminio pulido.",
+        specs: [
+            "Madera: Algarrobo rojo seleccionado y curado artesanalmente.",
+            "Grabado láser inalterable con el tiempo.",
+            "Incluye guía de curado y primer uso de regalo.",
+            "Apto para grabado de iniciales personalizadas en la base."
+        ]
+    },
+    {
+        id: 10,
+        name: "Set Matero Imperial Completo",
+        category: "sets",
+        price: 32000,
+        image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop",
+        gallery: [
+            "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?q=80&w=800&auto=format&fit=crop"
+        ],
+        badge: "Set Completo",
+        type: "Mate",
+        stlId: "SET #102",
+        desc: "El kit definitivo para los amantes del mate. Incluye Mate de Algarrobo tallado a mano, bombilla de alpaca reforzada y yerbera + azucarera impresas en 3D.",
+        specs: [
+            "Mate de Algarrobo de boca ancha con excelente capacidad.",
+            "Bombilla de Alpaca pico de loro incluida.",
+            "Yerbera y Azucarera 3D herméticas (PLA Food-Safe).",
+            "Caja de presentación especial de la marca ALESSIOS3D."
+        ]
+    },
+    {
+        id: 11,
+        name: "Mate Algarrobo Geométrico 3D Collar",
+        category: "mates",
+        price: 21000,
+        image: "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?q=80&w=800&auto=format&fit=crop",
+        gallery: [
+            "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?q=80&w=800&auto=format&fit=crop"
+        ],
+        badge: "Híbrido 3D/Madera",
+        type: "Mate",
+        stlId: "ART #011",
+        desc: "Edición exclusiva que combina lo tradicional y lo futurista. Cuerpo interior y boca de algarrobo macizo recubierto exteriormente por una armadura geométrica 3D.",
+        specs: [
+            "Interior 100% Algarrobo natural para conservar el sabor criollo.",
+            "Exterior impreso en 3D lavable y resistente a caídas.",
+            "Diseño ergonómico antideslizante."
+        ]
+    },
+    {
+        id: 12,
+        name: "Yerbera & Azucarera 3D Modular",
+        category: "sets",
+        price: 14000,
+        image: "images/product_scifi_weapon.png",
+        gallery: [
+            "images/product_scifi_weapon.png",
+            "images/product_mech_robot.png"
+        ],
+        badge: "3D Utility",
+        type: "3D",
+        stlId: "STL #3099",
+        desc: "Juego de recipientes de transporte para yerba y azúcar con pico vertedor anti-derrame. Sistema de enrosque hermético impreso en 3D.",
+        specs: [
+            "Impreso en PLA técnico apto uso alimentario.",
+            "Capacidad: 350g de yerba y 200g de azúcar.",
+            "Pico vertedor fácil de abrir con una sola mano."
+        ]
+    },
+    {
+        id: 13,
+        name: "Maceta / Porta Lápices Voronoi",
+        category: "decoracion",
+        price: 9500,
+        image: "images/product_cyberpunk_helmet.png",
+        gallery: [
+            "images/product_cyberpunk_helmet.png"
+        ],
+        badge: "Decoración",
+        type: "3D",
+        stlId: "STL #5512",
+        desc: "Diseño matemático Voronoi impreso en 3D ideal para decorar escritorios o como macetero de suculentas.",
+        specs: [
+            "Estructura liviana y resistente.",
+            "Incluye plato de drenaje interior.",
+            "Disponible en acabado mate y seda resplandeciente."
+        ]
+    }
+];
+
+// ===== CART & SIDEBAR STATE =====
+let cart = JSON.parse(localStorage.getItem('alessios3d_cart_v2') || '[]');
+let currentCategoryFilter = 'all';
+let subCategoryFilter = '';
+let searchQuery = '';
+let selectedProductForModal = null;
+let isDesktopSidebarCollapsed = false;
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+    renderCatalog();
+    updateCartUI();
+});
+
+// ===== TAB SWITCHING =====
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.top-nav-tab').forEach(btn => btn.classList.remove('active'));
+
+    const targetTab = document.getElementById(tabId);
+    if (targetTab) targetTab.classList.add('active');
+
+    const navBtn = document.getElementById('nav-' + tabId);
+    if (navBtn) navBtn.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== CATEGORY & SUBCATEGORY FILTERING =====
+function filterByCategory(category) {
+    currentCategoryFilter = category;
+    subCategoryFilter = '';
+
+    // Update Sidebar Active state
+    document.querySelectorAll('.sidebar-link').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.cat === category);
+    });
+
+    // Update Catalog quick buttons
+    document.querySelectorAll('[data-btncat]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.btncat === category);
+    });
+
+    switchTab('tab-catalogo');
+    renderCatalog();
+}
+
+function filterSubCategory(subName) {
+    subCategoryFilter = subName.toLowerCase();
+    switchTab('tab-catalogo');
+    renderCatalog();
+}
+
+// ===== SIDEBAR DESPLEGABLE & ACCORDION =====
+function toggleDesktopSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+
+    // Check if on mobile or desktop
+    if (window.innerWidth < 1024) {
+        toggleMobileSidebar();
+        return;
+    }
+
+    isDesktopSidebarCollapsed = !isDesktopSidebarCollapsed;
+
+    if (isDesktopSidebarCollapsed) {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('collapsed');
+    } else {
+        sidebar.classList.remove('collapsed');
+        mainContent.classList.remove('collapsed');
+    }
+}
+
+function toggleSubmenu(submenuId, triggerBtn) {
+    const submenu = document.getElementById(submenuId);
+    const arrow = triggerBtn.querySelector('.submenu-arrow');
+
+    // Close other submenus
+    document.querySelectorAll('.submenu').forEach(sm => {
+        if (sm.id !== submenuId) {
+            sm.classList.remove('open');
+            const otherArrow = sm.previousElementSibling?.querySelector('.submenu-arrow');
+            if (otherArrow) otherArrow.style.transform = 'rotate(0deg)';
+        }
+    });
+
+    submenu.classList.toggle('open');
+    if (arrow) {
+        arrow.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+}
+
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.toggle('hidden');
+    sidebar.classList.toggle('flex');
+    overlay.classList.toggle('hidden');
+}
+
+// ===== SEARCH =====
+function handleSearch(query) {
+    searchQuery = query.toLowerCase().trim();
+    switchTab('tab-catalogo');
+    renderCatalog();
+}
+
+// ===== RENDER CATALOG =====
+function renderCatalog() {
+    const grid = document.getElementById('catalog-products-grid');
+    const emptyState = document.getElementById('catalog-empty');
+
+    let filtered = PRODUCTS.filter(p => {
+        const matchesCategory = (currentCategoryFilter === 'all') || (p.category === currentCategoryFilter);
+        const matchesSub = !subCategoryFilter || p.name.toLowerCase().includes(subCategoryFilter) || p.desc.toLowerCase().includes(subCategoryFilter) || p.badge.toLowerCase().includes(subCategoryFilter);
+        const matchesSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSub && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+    }
+    emptyState.classList.add('hidden');
+
+    grid.innerHTML = filtered.map(p => `
+        <div onclick="openProductModal(${p.id})" class="product-card cursor-pointer bg-surface-container-low border border-outline-variant/70 rounded-2xl overflow-hidden flex flex-col justify-between">
+            <div class="relative aspect-[3/4] bg-surface-container overflow-hidden">
+                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md ${p.type === 'Mate' ? 'bg-wood/90 text-white' : 'bg-neon/90 text-white'}">
+                    ${p.badge}
+                </span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 justify-between gap-3">
+                <div>
+                    <h3 class="font-bold text-body-lg text-on-surface leading-snug line-clamp-1">${p.name}</h3>
+                    <p class="text-xs text-on-surface-variant line-clamp-2 mt-1">${p.desc}</p>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-outline-variant/40">
+                    <span class="text-headline-md font-bold ${p.type === 'Mate' ? 'text-wood' : 'text-neon'}">
+                        $${p.price.toLocaleString('es-AR')}
+                    </span>
+                    <button onclick="event.stopPropagation(); addToCart(${p.id})" class="${p.type === 'Mate' ? 'btn-wood' : 'btn-primary'} px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===== PRODUCT MODAL LOGIC =====
+function openProductModal(productId) {
+    const p = PRODUCTS.find(prod => prod.id === productId);
+    if (!p) return;
+
+    selectedProductForModal = p;
+
+    document.getElementById('modal-main-img').src = p.image;
+    document.getElementById('modal-title').textContent = p.name;
+    document.getElementById('modal-price').textContent = `$${p.price.toLocaleString('es-AR')}`;
+    document.getElementById('modal-category').textContent = p.category.replace('_', ' ');
+    document.getElementById('modal-stl-id').textContent = p.stlId || `ID #${p.id}`;
+    document.getElementById('modal-badge').textContent = p.badge;
+    document.getElementById('modal-badge').className = `absolute top-3 left-3 text-[10px] font-bold px-3 py-1 rounded-full text-white backdrop-blur-md ${p.type === 'Mate' ? 'bg-wood/90' : 'bg-neon/90'}`;
+
+    document.getElementById('modal-full-desc').textContent = p.desc;
+
+    // Direct whatsapp link
+    const waMsg = `Hola ALESSIOS3D! Quisiera consultar sobre el producto: ${p.name} (${p.stlId || ''})`;
+    document.getElementById('modal-whatsapp-direct').href = `https://wa.me/5491100000000?text=${encodeURIComponent(waMsg)}`;
+
+    // Add to cart button trigger
+    const addBtn = document.getElementById('modal-add-cart-btn');
+    addBtn.className = `${p.type === 'Mate' ? 'btn-wood' : 'btn-primary'} flex-1 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2`;
+    addBtn.onclick = () => {
+        addToCart(p.id);
+        closeProductModal();
+    };
+
+    // Render Thumbnails
+    const thumbsContainer = document.getElementById('modal-thumbs');
+    const imagesList = p.gallery && p.gallery.length > 0 ? p.gallery : [p.image];
+    thumbsContainer.innerHTML = imagesList.map((imgUrl, idx) => `
+        <button onclick="setModalMainImg('${imgUrl}')" class="w-14 h-14 rounded-xl overflow-hidden border border-outline-variant hover:border-neon focus:border-neon flex-shrink-0 bg-black">
+            <img src="${imgUrl}" class="w-full h-full object-cover">
+        </button>
+    `).join('');
+
+    // Render Specs List
+    const specsContainer = document.getElementById('modal-specs-list');
+    const specs = p.specs || [
+        "Material de alta resistencia comprobado.",
+        "Envíos embalados con protección para que lleguen intactos."
+    ];
+    specsContainer.innerHTML = specs.map(s => `
+        <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[14px] ${p.type === 'Mate' ? 'text-wood' : 'text-neon'} mt-0.5">check_circle</span>
+            <span>${s}</span>
+        </li>
+    `).join('');
+
+    document.getElementById('product-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function setModalMainImg(url) {
+    document.getElementById('modal-main-img').src = url;
+}
+
+function closeProductModal() {
+    document.getElementById('product-modal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+function toggleBookmarkModal() {
+    showToast('Añadido a tus favoritos guardados', 'info');
+}
+
+// ===== CART ACTIONS =====
+function addToCart(productId) {
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (!product) return;
+
+    const existing = cart.find(item => item.id === productId);
+    if (existing) {
+        existing.qty += 1;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
+
+    saveCart();
+    updateCartUI();
+    showToast(`"${product.name}" agregado al carrito`, 'success');
+}
+
+function updateQty(productId, delta) {
+    const item = cart.find(i => i.id === productId);
+    if (!item) return;
+
+    item.qty += delta;
+    if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+    }
+    saveCart();
+    updateCartUI();
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(i => i.id !== productId);
+    saveCart();
+    updateCartUI();
+    showToast('Producto eliminado', 'info');
+}
+
+function clearCart() {
+    cart = [];
+    saveCart();
+    updateCartUI();
+}
+
+function saveCart() {
+    localStorage.setItem('alessios3d_cart_v2', JSON.stringify(cart));
+}
+
+function updateCartUI() {
+    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    // Update badges
+    const navBadge = document.getElementById('nav-cart-badge');
+    const headerCount = document.getElementById('header-cart-count');
+
+    if (totalQty > 0) {
+        navBadge.classList.remove('hidden');
+        navBadge.textContent = totalQty;
+        headerCount.classList.remove('hidden');
+        headerCount.textContent = totalQty;
+    } else {
+        navBadge.classList.add('hidden');
+        headerCount.classList.add('hidden');
+    }
+
+    // Checkout Tab Summary
+    document.getElementById('cart-summary-qty').textContent = totalQty;
+    document.getElementById('cart-summary-subtotal').textContent = `$${subtotal.toLocaleString('es-AR')}`;
+    document.getElementById('cart-summary-total').textContent = `$${subtotal.toLocaleString('es-AR')}`;
+
+    // Checkout List Items
+    const list = document.getElementById('checkout-cart-list');
+    const empty = document.getElementById('checkout-empty');
+
+    if (cart.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+    }
+    empty.classList.add('hidden');
+
+    list.innerHTML = cart.map(item => `
+        <div class="flex items-center gap-4 bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/60">
+            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg bg-surface-container flex-shrink-0">
+            <div class="flex-grow min-w-0">
+                <h4 class="text-xs font-bold text-on-surface truncate">${item.name}</h4>
+                <p class="text-[11px] text-on-surface-variant mt-0.5">$${item.price.toLocaleString('es-AR')} c/u</p>
+            </div>
+            <div class="flex items-center gap-2 bg-surface-container px-2 py-1 rounded-lg border border-outline-variant">
+                <button onclick="updateQty(${item.id}, -1)" class="text-on-surface-variant hover:text-white px-1">-</button>
+                <span class="text-xs font-bold text-on-surface">${item.qty}</span>
+                <button onclick="updateQty(${item.id}, 1)" class="text-on-surface-variant hover:text-white px-1">+</button>
+            </div>
+            <div class="text-right flex-shrink-0">
+                <span class="text-xs font-bold text-neon block">$${(item.price * item.qty).toLocaleString('es-AR')}</span>
+                <button onclick="removeFromCart(${item.id})" class="text-[11px] text-error hover:underline">Quitar</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===== WHATSAPP ORDER GENERATOR =====
+function sendWhatsAppOrder(e) {
+    e.preventDefault();
+    if (cart.length === 0) {
+        showToast('El carrito está vacío', 'error');
+        return false;
+    }
+
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const address = document.getElementById('cust-address').value.trim();
+    const notes = document.getElementById('cust-notes').value.trim();
+
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    let msg = `🧉 *NUEVO PEDIDO — ALESSIOS3D*\n\n`;
+    msg += `👤 *Cliente:* ${name}\n`;
+    msg += `📞 *Teléfono:* ${phone}\n`;
+    msg += `📍 *Ubicación:* ${address}\n\n`;
+    msg += `📦 *Detalle del Pedido:*\n`;
+
+    cart.forEach((item, i) => {
+        msg += `${i + 1}. ${item.name} (x${item.qty}) — $${(item.price * item.qty).toLocaleString('es-AR')}\n`;
+    });
+
+    msg += `\n💰 *Total:* $${total.toLocaleString('es-AR')}\n`;
+    if (notes) msg += `\n📝 *Notas/Grabado:* ${notes}\n`;
+
+    const number = '5491100000000'; // Replace with real store number
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    return false;
+}
+
+// ===== TOAST SYSTEM =====
+function showToast(msg, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast pointer-events-auto flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md ${type === 'success' ? 'bg-neon text-white' : 'bg-surface-container-high text-on-surface border border-outline-variant'}`;
+    toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'success' ? 'check_circle' : 'info'}</span> ${msg}`;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+</script>
+
+</body>
+</html>

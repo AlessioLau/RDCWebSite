@@ -1,0 +1,345 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>STLFLIX - Explorar</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<!-- Tailwind & Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#747c87",
+                        "on-secondary-fixed": "#001d33",
+                        "on-primary-fixed": "#191c22",
+                        "tertiary-fixed-dim": "#bfc7d3",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#003354",
+                        "secondary-container": "#00a2fd",
+                        "on-error": "#690005",
+                        "surface-container": "#1b2027",
+                        "surface-container-low": "#171c23",
+                        "secondary-fixed": "#cfe5ff",
+                        "inverse-surface": "#dee2ec",
+                        "outline-variant": "#45474b",
+                        "tertiary": "#bfc7d3",
+                        "primary": "#c4c6cf",
+                        "on-tertiary": "#29313a",
+                        "surface-container-high": "#252a32",
+                        "secondary-fixed-dim": "#98cbff",
+                        "primary-container": "#0b0e14",
+                        "on-primary": "#2e3037",
+                        "on-tertiary-fixed": "#141c25",
+                        "surface": "#0f141b",
+                        "secondary": "#98cbff",
+                        "outline": "#909095",
+                        "on-tertiary-fixed-variant": "#404751",
+                        "surface-tint": "#c4c6cf",
+                        "inverse-primary": "#5c5e66",
+                        "primary-fixed": "#e1e2eb",
+                        "on-background": "#dee2ec",
+                        "surface-container-lowest": "#090f15",
+                        "tertiary-fixed": "#dbe3ef",
+                        "surface-container-highest": "#30353d",
+                        "on-surface-variant": "#c6c6cb",
+                        "surface-bright": "#343941",
+                        "inverse-on-surface": "#2c3138",
+                        "on-secondary-fixed-variant": "#004a77",
+                        "on-surface": "#dee2ec",
+                        "tertiary-container": "#070f17",
+                        "on-primary-container": "#797b83",
+                        "primary-fixed-dim": "#c4c6cf",
+                        "on-secondary-container": "#003558",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#30353d",
+                        "background": "#0f141b",
+                        "on-primary-fixed-variant": "#44474e",
+                        "error-container": "#93000a",
+                        "surface-dim": "#0f141b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "xs": "8px",
+                        "margin-mobile": "16px",
+                        "sm": "16px",
+                        "lg": "40px",
+                        "xl": "64px",
+                        "base": "4px",
+                        "md": "24px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base Canvas Setup */
+        body {
+            background-color: #0f141b; /* background */
+            color: #dee2ec; /* on-background */
+        }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #171c23; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #45474b; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5c5e66; 
+        }
+    </style>
+</head>
+<body class="font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar Component -->
+<nav class="bg-background/70 backdrop-blur-md border-b border-outline-variant docked full-width top-0 sticky z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop py-4 w-full">
+<!-- Brand & Nav Group -->
+<div class="flex items-center gap-lg">
+<div class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-gradient-to-tr from-secondary to-secondary-container"></div>ALESSIOS3D</div>
+<!-- Desktop Navigation Links -->
+<div class="hidden md:flex items-center gap-md">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 scale-95 duration-150 font-label-md text-label-md" href="#">Explorar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high font-label-md text-label-md px-2 py-1 rounded" href="#">Lanzamientos</a>
+
+</div>
+</div>
+<!-- Search Bar (Center/Right-ish) -->
+<div class="hidden lg:flex flex-1 max-w-xl mx-md relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="Explorar categorías, lanzamientos, STLs..." type="text">
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+
+<button class="hidden md:block border border-outline-variant text-on-surface font-label-md text-label-md px-4 py-2 rounded-full hover:bg-surface-container-high transition-all">Login</button>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-all"><span class="material-symbols-outlined">shopping_cart</span></button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-all"><span class="material-symbols-outlined">language</span></button>
+</div>
+</div>
+</nav>
+<div class="flex flex-1">
+<!-- SideNavBar Component -->
+<aside class="bg-surface-container-low border-r border-outline-variant fixed left-0 top-[72px] h-[calc(100vh-72px)] w-72 hidden lg:flex flex-col py-md overflow-y-auto z-40">
+<div class="px-6 mb-6">
+<h3 class="font-label-sm text-label-sm tracking-wider text-on-surface-variant uppercase">CATEGORÍAS</h3>
+<p class="text-label-sm text-on-tertiary-container mt-1">Browse by interest</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 text-secondary bg-secondary-container/10 border-l-2 border-secondary px-4 py-3 rounded-r-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+                    Art
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+                    Toys
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">swords</span>
+                    RPG
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">home</span>
+                    Home Decor
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">build</span>
+                    Useful
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+                    Community
+                </a>
+</nav>
+<div class="px-6 mt-8 mb-4">
+<button class="w-full border border-secondary text-secondary font-label-md text-label-md py-2 rounded-full hover:bg-secondary/10 transition-all">Become a Seller</button>
+</div>
+<div class="px-4 mt-auto flex flex-col gap-1 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span> Support
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high hover:text-on-surface transition-all rounded-lg font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">mail</span> Contact
+                </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-72 p-margin-mobile md:p-margin-desktop min-h-screen">
+<!-- Page Header -->
+<header class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex items-baseline gap-4">
+<h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface">Todos los modelos</h1>
+<span class="font-label-md text-label-md text-on-tertiary-container">4746 modelsCount</span>
+</div>
+</header>
+<!-- Filters Bar -->
+<section class="mb-lg flex flex-wrap items-center gap-sm">
+<!-- Dropdown Filter: Printer Type -->
+<button class="flex items-center gap-2 bg-surface-container border border-outline-variant hover:border-secondary transition-colors px-4 py-2 rounded-full font-label-md text-label-md text-on-surface group">
+                    Tipo de Impresora
+                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-secondary">keyboard_arrow_down</span>
+</button>
+<!-- Dropdown Filter: Difficulty -->
+<button class="flex items-center gap-2 bg-surface-container border border-outline-variant hover:border-secondary transition-colors px-4 py-2 rounded-full font-label-md text-label-md text-on-surface group">
+                    Dificultad
+                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-secondary">keyboard_arrow_down</span>
+</button>
+<!-- Dropdown Filter: Time -->
+<button class="flex items-center gap-2 bg-surface-container border border-outline-variant hover:border-secondary transition-colors px-4 py-2 rounded-full font-label-md text-label-md text-on-surface group">
+                    Tiempo de Impresión
+                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-secondary">keyboard_arrow_down</span>
+</button>
+<!-- Toggle Filter: Multipart -->
+<button class="flex items-center gap-2 bg-surface-container border border-outline-variant hover:bg-surface-container-high transition-colors px-4 py-2 rounded-full font-label-md text-label-md text-on-surface">
+<div class="w-4 h-4 border border-outline-variant rounded-sm flex items-center justify-center bg-background"></div>
+                    Multipartes
+                </button>
+<div class="flex-1"></div>
+<!-- Sort & View Controls -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-surface-container border border-outline-variant rounded-full p-1">
+<span class="text-label-sm text-on-surface-variant px-2">modelsPerLine</span>
+<button class="bg-secondary text-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm font-bold">4</button>
+<button class="text-on-surface px-3 py-1 rounded-full font-label-sm text-label-sm hover:bg-surface-container-high">6</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm text-on-surface-variant hidden md:block">Ordenar por:</span>
+<button class="flex items-center gap-2 bg-surface-container border border-outline-variant hover:border-secondary transition-colors px-4 py-2 rounded-full font-label-md text-label-md text-on-surface group">
+                            Relevancia
+                            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">sort</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Product Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<article class="group relative bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)] aspect-[3/4] flex flex-col cursor-pointer">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-low/90 z-10 pointer-events-none"></div>
+<div class="w-full h-full relative p-4 flex flex-col items-center justify-center bg-[#0b0e14]">
+<!-- Image placeholder representing a highly detailed 3D model render -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-90 group-hover:opacity-100 transition-opacity mix-blend-screen" data-alt="A highly detailed 3D render of a cute, stylized mechanical T-Rex dinosaur toy, printed in vibrant neon green filament. The dinosaur is posed aggressively yet comically against a stark, pitch-black studio background. Dramatic, high-contrast rim lighting highlights the layer lines and precise geometric facets of the 3D model, creating a cinematic, premium e-commerce presentation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuClqj3MNE3cEfqgInPzPuMHSBTG26_II0mhN12AfG3uLXgx6m3XJa--fYF8xfxs6NRkcAIt0VKITNur5Ve76oKR5e0ajaVQia_vJoLq2X5RqTtNK84Xi4gsqxAcQqIJ7womcH6eH_Ol-J4z3Y54rfM5igMvaOxsaZFA1-0g8jC9GHf2B0C9PtOVD214xX9qBUcXnffeWE04-lQzivbVmWeS4HIIa1IQhXuwzPTf04qSre1zvBsGOZxijQ')"></div>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-4 z-20 flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wide drop-shadow-md">Rex<br>Clamp</h3>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface hover:bg-secondary hover:text-primary-container hover:border-secondary transition-all">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</article>
+<!-- Product Card 2 -->
+<article class="group relative bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)] aspect-[3/4] flex flex-col cursor-pointer">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-low/90 z-10 pointer-events-none"></div>
+<div class="w-full h-full relative p-4 flex flex-col items-center justify-center bg-[#0b0e14]">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-90 group-hover:opacity-100 transition-opacity mix-blend-screen" data-alt="A premium 3D render of a stylized, low-poly Triceratops toy, printed in matte grey resin. The model rests on a highly reflective dark surface within a void-like black studio environment. Soft, cool blue ambient light softly illuminates the contours and horns of the dinosaur, emphasizing its sharp, modern aesthetic suitable for a high-end digital asset marketplace." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCyUONUwjYzMKpO9ct96eV9G6ZSHqS47T10Nk5lY6wFi9iOJT9ItXOtOBVyhHKJNNkFDetCQbD1ZTndIub05y0ORFoHKhui4OUSLa84We-nMZi71vCn5c25DNp6zMkO76-kfYLP6JnEzWLH1f882_3dPd5ned6xgxCYFoOfHO4WY0kAwH2EcO1wiza5zfMgXP7IznAW863eMAdvK_9opxoL9_F9sO2irRHrYYjNKO8M3B4rq3cAgxjJQ')"></div>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-4 z-20 flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wide drop-shadow-md">Tri<br>Snap</h3>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface hover:bg-secondary hover:text-primary-container hover:border-secondary transition-all">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</article>
+<!-- Product Card 3 -->
+<article class="group relative bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)] aspect-[3/4] flex flex-col cursor-pointer">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-low/90 z-10 pointer-events-none"></div>
+<div class="w-full h-full relative p-4 flex flex-col items-center justify-center bg-[#0b0e14]">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-90 group-hover:opacity-100 transition-opacity mix-blend-screen" data-alt="A sleek, articulated 3D printed shark model rendered in glossy, bright cyan blue material. The shark is dynamically posed mid-swim against an infinite black backdrop. Intense, focused spotlights create sharp reflections on its smooth surfaces and segmented body, giving it a robotic, futuristic feel perfectly aligned with a tech-centric 3D printing platform." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuClFqM6_x1lTeneQTpl2YMn4a-Yl_PM0JkTKUz5uUhIDMkK1DrOYOgzsbRneaI2kaWncv3CK1JiAtMTdrJtX0DNOgAO-0AwLqtgEVJKA275N65M81D8FYiNQze1X9Pl1jFkVK_yHETC838X8BeoVVhVxOIFQkci3NoIz25iVwAuqLQw25zfLSqgPhz1nviDuIuTm0BoHh9CASoioeJC3PPG1Sfgv8Tg30mJhqoZhO9jBIBIKfHk0llJYQ')"></div>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-4 z-20 flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wide drop-shadow-md">Bite<br>Fin</h3>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface hover:bg-secondary hover:text-primary-container hover:border-secondary transition-all">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</article>
+<!-- Product Card 4 -->
+<article class="group relative bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)] aspect-[3/4] flex flex-col cursor-pointer">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-low/90 z-10 pointer-events-none"></div>
+<div class="w-full h-full relative p-4 flex flex-col items-center justify-center bg-[#0b0e14]">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-90 group-hover:opacity-100 transition-opacity mix-blend-screen" data-alt="A charming, chunky 3D printed cat figure with an oversized head and large eyes, rendered in a warm, textured charcoal grey. The model sits playfully on a deep, dark obsidian floor. Subtle pink rim lighting accents its ears, providing a gentle pop of color in the dark, cinematic studio setting designed to showcase high-quality digital STL files." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVO_-PkwQvRqpHzjM2GRQoahj_esujLqysYF4QXLZn1zIje5v3NML8B9G5zO_7F8i9nIzandlDwywtr6a4fWzZln8xWcN-Dpd5vgkE_G3R1WVGw8R0LY02uQuBdwgSnJZh7XKw_I4zzelY4ZEioujCMmv6djeIVYshu8WYqsJEBAzyTc6zZWHxqEcdpgCMQO9WFq5PUDzl-7xgib7cjCt2AbrqHtFivbnuuSZGC_ovgpcdCMnvuowyPg')"></div>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-4 z-20 flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wide drop-shadow-md">Bitty<br>Pounce</h3>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface hover:bg-secondary hover:text-primary-container hover:border-secondary transition-all">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</article>
+</section>
+<!-- Load More -->
+<div class="mt-xl flex justify-center">
+<button class="px-8 py-3 rounded-full border border-outline-variant text-on-surface font-label-md text-label-md hover:border-secondary hover:text-secondary transition-all">
+                    Cargar más modelos
+                </button>
+</div>
+</main>
+</div>
+<!-- Floating Action Button / Chat (Contextual from image) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-secondary rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,162,253,0.4)] hover:scale-110 transition-transform z-50">
+<span class="material-symbols-outlined text-primary-container text-[28px]">chat_bubble</span>
+</button>
+
+
+</body></html>
