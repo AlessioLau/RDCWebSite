@@ -237,6 +237,16 @@
             from { opacity: 1; transform: translateX(0); }
             to { opacity: 0; transform: translateX(100%); }
         }
+
+        /* Autofill override — keep dark background & light text */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        textarea:-webkit-autofill {
+            -webkit-text-fill-color: #dee2ec !important;
+            -webkit-box-shadow: 0 0 0px 1000px #1b2027 inset !important;
+            caret-color: #dee2ec;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased overflow-x-hidden">
@@ -276,6 +286,10 @@
             Carrito / Checkout
             <span id="nav-cart-badge" class="ml-1 bg-neon text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
         </button>
+        <button onclick="switchTab('tab-admin')" id="nav-tab-admin" class="top-nav-tab text-label-md text-on-surface-variant hover:text-on-surface py-2 px-1 transition-all flex items-center gap-2 text-neon hidden">
+            <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+            Panel Admin
+        </button>
     </nav>
 
     <!-- Right: Search Bar & Actions -->
@@ -292,8 +306,14 @@
             <span id="header-cart-count" class="absolute -top-1 -right-1 bg-neon text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
         </button>
 
+        <!-- Unified Account / Admin Button -->
+        <button id="btn-unified-account" onclick="handleUnifiedAccountBtn()" class="btn-outline px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5" title="Mi Cuenta">
+            <span id="unified-account-icon" class="material-symbols-outlined text-[18px]">account_circle</span>
+            <span id="unified-account-label" class="hidden sm:inline">Ingresar</span>
+        </button>
+
         <!-- Direct WhatsApp Button -->
-        <a href="https://wa.me/5491100000000?text=Hola%20ALESSIOS3D,%20quiero%20hacer%20una%20consulta" target="_blank" class="hidden sm:flex btn-primary px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5">
+        <a id="header-wa-link" href="#" target="_blank" class="hidden sm:flex btn-primary px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5">
             <span class="material-symbols-outlined text-[16px]">chat</span>
             WhatsApp
         </a>
@@ -331,74 +351,14 @@
 
         <!-- Navigation Links with Submenus -->
         <nav class="flex-1 flex flex-col gap-1 px-3">
-            
             <!-- Todos los Productos -->
             <button onclick="filterByCategory('all')" class="sidebar-link active flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="all" title="Todos los productos">
                 <span class="material-symbols-outlined text-[20px] text-neon flex-shrink-0">apps</span>
                 <span class="sidebar-text font-semibold flex-1">Todos los Productos</span>
             </button>
 
-            <!-- Impresiones 3D (Desplegable Acordeón) -->
-            <div>
-                <button onclick="toggleSubmenu('submenu-3d', this)" class="sidebar-link flex items-center justify-between text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="3d_prints" title="Impresiones 3D">
-                    <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-[20px] text-neon flex-shrink-0">view_in_ar</span>
-                        <span class="sidebar-text">Impresiones 3D</span>
-                    </div>
-                    <span class="material-symbols-outlined text-[18px] submenu-arrow transition-transform">expand_more</span>
-                </button>
-                <!-- Subcategorías Desplegables -->
-                <div id="submenu-3d" class="submenu flex flex-col gap-1 pl-10 pr-2 pt-1">
-                    <button onclick="filterByCategory('3d_prints'); filterSubCategory('Props')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-neon py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-neon"></span> Cosplay & Props
-                    </button>
-                    <button onclick="filterByCategory('3d_prints'); filterSubCategory('Articulado')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-neon py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-neon"></span> Mechas Articulados
-                    </button>
-                    <button onclick="filterByCategory('3d_prints'); filterSubCategory('Resina')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-neon py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-neon"></span> Esculturas Resina
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mates de Algarrobo (Desplegable Acordeón) -->
-            <div>
-                <button onclick="toggleSubmenu('submenu-mates', this)" class="sidebar-link flex items-center justify-between text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="mates" title="Mates de Algarrobo">
-                    <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-[20px] text-wood flex-shrink-0">local_cafe</span>
-                        <span class="sidebar-text">Mates de Algarrobo</span>
-                    </div>
-                    <span class="material-symbols-outlined text-[18px] submenu-arrow transition-transform">expand_more</span>
-                </button>
-                <!-- Subcategorías Desplegables -->
-                <div id="submenu-mates" class="submenu flex flex-col gap-1 pl-10 pr-2 pt-1">
-                    <button onclick="filterByCategory('mates'); filterSubCategory('Grabado')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-wood py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-wood"></span> Mates Grabados Láser
-                    </button>
-                    <button onclick="filterByCategory('mates'); filterSubCategory('Híbrido')" class="sidebar-text text-[11px] text-on-surface-variant hover:text-wood py-1.5 px-3 rounded-lg text-left hover:bg-surface-container-high flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-wood"></span> Mates Híbridos 3D
-                    </button>
-                </div>
-            </div>
-
-            <!-- Sets Materos & Yerberas -->
-            <button onclick="filterByCategory('sets')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="sets" title="Sets Materos & Yerberas">
-                <span class="material-symbols-outlined text-[20px] text-yellow-400 flex-shrink-0">inventory_2</span>
-                <span class="sidebar-text">Sets Materos & Yerberas</span>
-            </button>
-
-            <!-- Props & RPG -->
-            <button onclick="filterByCategory('rpg_props')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="rpg_props" title="Props & RPG">
-                <span class="material-symbols-outlined text-[20px] text-purple-400 flex-shrink-0">swords</span>
-                <span class="sidebar-text">Props & RPG</span>
-            </button>
-
-            <!-- Decoración & Arte -->
-            <button onclick="filterByCategory('decoracion')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full" data-cat="decoracion" title="Decoración & Arte">
-                <span class="material-symbols-outlined text-[20px] text-emerald-400 flex-shrink-0">palette</span>
-                <span class="sidebar-text">Decoración & Arte</span>
-            </button>
-
+            <!-- Categorías Dinámicas -->
+            <div id="sidebar-dynamic-categories" class="flex flex-col gap-1"></div>
         </nav>
 
         <!-- Custom Order Banner -->
@@ -407,7 +367,7 @@
                 <span class="material-symbols-outlined text-neon text-[24px] mb-1">design_services</span>
                 <h5 class="text-xs font-bold text-on-surface mb-1">¿Buscás algo a medida?</h5>
                 <p class="text-[10px] text-on-surface-variant mb-2.5">Imprimimos tu STL o grabamos tu mate a pedido.</p>
-                <a href="https://wa.me/5491100000000?text=Hola,%20quisiera%20cotizar%20un%20trabajo%20personalizado" target="_blank" class="btn-primary w-full py-1.5 rounded-xl text-[10px] font-bold inline-flex items-center justify-center gap-1">
+                <a id="sidebar-wa-link" href="#" target="_blank" class="btn-primary w-full py-1.5 rounded-xl text-[10px] font-bold inline-flex items-center justify-center gap-1">
                     <span class="material-symbols-outlined text-[13px]">send</span> Cotizar Personalizado
                 </a>
             </div>
@@ -415,7 +375,7 @@
 
         <!-- Support Footer Links -->
         <div class="sidebar-text px-4 pt-3 border-t border-outline-variant/60 flex flex-col gap-1 text-xs">
-            <a href="https://wa.me/5491100000000" target="_blank" class="flex items-center gap-3 text-on-surface-variant px-3 py-1.5 hover:text-neon transition-colors">
+            <a id="sidebar-support-link" href="#" target="_blank" class="flex items-center gap-3 text-on-surface-variant px-3 py-1.5 hover:text-neon transition-colors">
                 <span class="material-symbols-outlined text-[16px]">help</span> Soporte & Dudas
             </a>
         </div>
@@ -513,7 +473,7 @@
                 </div>
 
                 <!-- Horizontal Carousel -->
-                <div class="flex gap-6 md:gap-8 overflow-x-auto pb-6 scroll-smooth snap-x">
+                <div id="top-carousel-container" class="flex gap-6 md:gap-8 overflow-x-auto pb-6 scroll-smooth snap-x">
                     
                     <!-- Top 1 -->
                     <div class="flex-none w-[260px] sm:w-[280px] md:w-[320px] relative snap-start group cursor-pointer" onclick="openProductModal(1)">
@@ -617,11 +577,8 @@
                 </div>
                 
                 <!-- Category Quick Filters Bar -->
-                <div class="flex flex-wrap gap-2">
+                <div id="catalog-quick-filters" class="flex flex-wrap gap-2">
                     <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold active" onclick="filterByCategory('all')" data-btncat="all">Todos</button>
-                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold" onclick="filterByCategory('3d_prints')" data-btncat="3d_prints">Impresión 3D</button>
-                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold" onclick="filterByCategory('mates')" data-btncat="mates">Mates Algarrobo</button>
-                    <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold" onclick="filterByCategory('sets')" data-btncat="sets">Sets Materos</button>
                 </div>
             </div>
 
@@ -701,20 +658,26 @@
 
                         <!-- Customer Form -->
                         <form id="whatsapp-checkout-form" onsubmit="return sendWhatsAppOrder(event)" class="space-y-4 pt-6">
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Datos del Cliente</h4>
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Datos del Cliente</h4>
+                                <div id="checkout-autofill-badge" class="hidden text-[10px] font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 items-center gap-1">
+                                    <span class="material-symbols-outlined text-[12px]">check_circle</span>
+                                    <span>Datos Autocompletados</span>
+                                </div>
+                            </div>
                             
                             <div>
-                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-name">Nombre y Apellido *</label>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-name">Nombre y Apellido <span id="lbl-req-name" class="text-error">*</span></label>
                                 <input type="text" id="cust-name" required placeholder="Ej: Lucas Pérez" class="input-field w-full rounded-xl p-3 text-xs">
                             </div>
 
                             <div>
-                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-phone">Teléfono / WhatsApp *</label>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-phone">Teléfono / WhatsApp <span id="lbl-req-phone" class="text-error">*</span></label>
                                 <input type="tel" id="cust-phone" required placeholder="Ej: 11 1234-5678" class="input-field w-full rounded-xl p-3 text-xs">
                             </div>
 
                             <div>
-                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-address">Localidad / Provincia *</label>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="cust-address">Localidad / Provincia <span id="lbl-req-address" class="text-error">*</span></label>
                                 <input type="text" id="cust-address" required placeholder="Ej: Córdoba Capital" class="input-field w-full rounded-xl p-3 text-xs">
                             </div>
 
@@ -733,6 +696,142 @@
 
             </div>
 
+        </div>
+
+        <!-- ==================== TAB 4: PANEL ADMIN ==================== -->
+        <div id="tab-admin" class="tab-content w-full p-margin-mobile md:p-margin-desktop overflow-x-hidden">
+            <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant pb-6">
+                <div>
+                    <span class="text-xs text-neon uppercase tracking-widest font-bold">Gestión Interna</span>
+                    <h2 class="text-headline-xl text-on-surface mt-1 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-neon text-[32px]">admin_panel_settings</span>
+                        Panel de Administración
+                    </h2>
+                    <p class="text-body-md text-on-surface-variant">Modificá productos, categorías, el número de WhatsApp oficial y configuraciones de seguridad.</p>
+                </div>
+                <button onclick="logoutAdmin()" class="btn-outline px-4 py-2 rounded-xl text-xs font-bold text-error border-error/50 hover:bg-error/10 flex items-center gap-2 w-fit">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    Cerrar Sesión Admin
+                </button>
+            </div>
+
+            <!-- Admin Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Left Column: WhatsApp, Categories & Security -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    
+                    <!-- WhatsApp Card -->
+                    <div class="bg-surface-container-low border border-outline-variant rounded-2xl p-6">
+                        <h3 class="text-headline-md font-bold text-on-surface mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-emerald-400">chat</span>
+                            WhatsApp de Contacto
+                        </h3>
+                        <p class="text-xs text-on-surface-variant mb-4">Este número se usará para recibir todos los pedidos de la web y en los botones de contacto directo.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1" for="admin-wa-input">Número con código de país (Sin + ni espacios)</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant text-[18px]">call</span>
+                                    <input type="text" id="admin-wa-input" placeholder="Ej: 5491100000000" class="input-field w-full rounded-xl py-2.5 pl-10 pr-3 text-xs font-mono">
+                                </div>
+                                <span class="text-[10px] text-on-tertiary-container mt-1 block">Ejemplo para Argentina: 5491112345678</span>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button onclick="saveWhatsAppConfig()" class="btn-primary flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">save</span>
+                                    Guardar Número
+                                </button>
+                                <a id="admin-wa-test-link" href="#" target="_blank" class="btn-outline px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1 text-emerald-400 border-emerald-400/40 hover:bg-emerald-400/10" title="Probar chat">
+                                    <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                                    Probar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories Card -->
+                    <div class="bg-surface-container-low border border-outline-variant rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-headline-md font-bold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-neon">category</span>
+                                Categorías
+                            </h3>
+                            <button onclick="openCategoryModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">add</span> Nueva
+                            </button>
+                        </div>
+                        
+                        <div id="admin-categories-list" class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                            <!-- Injected JS -->
+                        </div>
+                    </div>
+
+                    <!-- Security Card -->
+                    <div class="bg-surface-container-low border border-outline-variant rounded-2xl p-6">
+                        <h3 class="text-headline-md font-bold text-on-surface mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-400">lock</span>
+                            Seguridad Admin
+                        </h3>
+                        <p class="text-xs text-on-surface-variant mb-4">Modificá tu contraseña de acceso al panel de administración.</p>
+                        
+                        <form onsubmit="return handlePasswordChange(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1">Contraseña Actual</label>
+                                <input type="password" id="admin-pass-current" required class="input-field w-full rounded-xl p-2.5 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-on-surface-variant mb-1">Nueva Contraseña</label>
+                                <input type="password" id="admin-pass-new" required class="input-field w-full rounded-xl p-2.5 text-xs">
+                            </div>
+                            <button type="submit" class="btn-outline w-full py-2.5 rounded-xl text-xs font-bold hover:border-amber-400 hover:text-amber-400 transition-colors">
+                                Cambiar Contraseña
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Products Table / CRUD -->
+                <div class="lg:col-span-8">
+                    <div class="bg-surface-container-low border border-outline-variant rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="text-headline-md font-bold text-on-surface flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-neon">inventory_2</span>
+                                    Gestión de Productos (<span id="admin-products-count">0</span>)
+                                </h3>
+                                <p class="text-xs text-on-surface-variant">Agregá, editá o eliminá productos del catálogo global.</p>
+                            </div>
+                            
+                            <button onclick="openProductModalForCreate()" class="btn-primary px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                                Agregar Producto
+                            </button>
+                        </div>
+
+                        <!-- Products Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-on-surface border-collapse">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface-variant font-bold uppercase text-[10px]">
+                                        <th class="py-3 px-2">Producto</th>
+                                        <th class="py-3 px-2">Categoría</th>
+                                        <th class="py-3 px-2">Precio</th>
+                                        <th class="py-3 px-2">Tipo</th>
+                                        <th class="py-3 px-2 text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-products-table-body" class="divide-y divide-outline-variant/40">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <!-- ==================== FOOTER ==================== -->
@@ -758,7 +857,7 @@
 
                 <div class="flex flex-col gap-2.5 text-xs">
                     <span class="font-bold text-on-surface mb-1">Contacto</span>
-                    <a href="https://wa.me/5491100000000" target="_blank" class="text-on-tertiary-container hover:text-neon transition-colors flex items-center gap-1">
+                    <a id="footer-wa-link" href="#" target="_blank" class="text-on-tertiary-container hover:text-neon transition-colors flex items-center gap-1">
                         <span class="material-symbols-outlined text-[16px]">chat</span> WhatsApp Oficial
                     </a>
                     <span class="text-on-tertiary-container">Envíos a todo el país</span>
@@ -785,11 +884,16 @@
             <span class="material-symbols-outlined">close</span>
         </button>
 
-        <!-- Galería de Fotos (Izquierda) -->
+        <!-- Galería de Fotos/Video (Izquierda) -->
         <div class="w-full md:w-1/2 p-6 bg-surface-container flex flex-col gap-4">
             <div class="relative aspect-square w-full rounded-2xl overflow-hidden border border-outline-variant/60 bg-black flex items-center justify-center">
-                <img id="modal-main-img" src="" alt="Main Image" class="w-full h-full object-cover transition-all duration-300">
-                <span id="modal-badge" class="absolute top-3 left-3 text-[10px] font-bold px-3 py-1 rounded-full text-white bg-neon backdrop-blur-md"></span>
+                <!-- Media container: swaps between img/video/iframe -->
+                <div id="modal-main-media-container" class="w-full h-full relative">
+                    <img id="modal-main-img" src="" alt="Main Image" class="w-full h-full object-cover transition-all duration-300">
+                    <video id="modal-main-video" src="" autoplay muted loop controls playsinline class="hidden w-full h-full object-cover"></video>
+                    <iframe id="modal-main-iframe" src="" class="hidden w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <span id="modal-badge" class="absolute top-3 left-3 text-[10px] font-bold px-3 py-1 rounded-full text-white bg-neon backdrop-blur-md z-10"></span>
             </div>
             
             <!-- Miniaturas adicionales -->
@@ -858,13 +962,344 @@
     </div>
 </div>
 
+<!-- Admin Login Modal -->
+<div id="admin-login-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+    <div class="w-full max-w-md bg-surface-container-low border border-outline-variant rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 relative">
+        <button onclick="closeAdminLoginModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-white p-1 rounded-lg">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="text-center">
+            <div class="w-14 h-14 rounded-full bg-neon/10 border border-neon/30 text-neon flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-[28px]">admin_panel_settings</span>
+            </div>
+            <h3 class="text-headline-md font-bold text-on-surface">Acceso Administrador</h3>
+            <p class="text-xs text-on-surface-variant mt-1">Ingresá tus credenciales para gestionar el sitio.</p>
+        </div>
+
+        <form onsubmit="return handleAdminLogin(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs text-on-surface-variant mb-1" for="admin-user-input">Usuario</label>
+                <input type="text" id="admin-user-input" required value="admin" class="input-field w-full rounded-xl p-3 text-xs">
+            </div>
+            <div>
+                <label class="block text-xs text-on-surface-variant mb-1" for="admin-pass-input">Contraseña</label>
+                <input type="password" id="admin-pass-input" required placeholder="••••••••" class="input-field w-full rounded-xl p-3 text-xs">
+            </div>
+
+            <div id="admin-login-error" class="hidden text-xs text-error bg-error-container/30 border border-error/40 p-3 rounded-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px]">error</span>
+                <span>Usuario o contraseña incorrectos.</span>
+            </div>
+
+            <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">login</span>
+                Iniciar Sesión
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- User Auth & Profile Modal -->
+<div id="user-auth-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+    <div class="w-full max-w-md bg-surface-container-low border border-outline-variant rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 relative">
+        <button onclick="closeUserAuthModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-white p-1 rounded-lg">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <!-- Dynamic Content: Auth Tabs OR Profile Info -->
+        <div id="user-modal-logged-out" class="space-y-6">
+            <!-- Selector Tab: Login / Registro -->
+            <div class="flex border-b border-outline-variant">
+                <button id="user-tab-login-btn" onclick="switchUserAuthTab('login')" class="flex-1 pb-3 text-sm font-bold text-neon border-b-2 border-neon text-center">
+                    Iniciar Sesión
+                </button>
+                <button id="user-tab-register-btn" onclick="switchUserAuthTab('register')" class="flex-1 pb-3 text-sm font-bold text-on-surface-variant hover:text-on-surface text-center">
+                    Crear Cuenta
+                </button>
+            </div>
+
+            <!-- Form Iniciar Sesión -->
+            <form id="user-login-form" onsubmit="return handleUserLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-login-email">Email</label>
+                    <input type="email" id="user-login-email" required placeholder="tu@email.com" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-login-pass">Contraseña</label>
+                    <input type="password" id="user-login-pass" required placeholder="••••••••" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">login</span>
+                    Entrar a Mi Cuenta
+                </button>
+
+                <div class="pt-3 border-t border-outline-variant/40 text-center">
+                    <button type="button" onclick="closeUserAuthModal(); openAdminLoginModal();" class="text-xs text-on-surface-variant hover:text-neon transition-colors inline-flex items-center gap-1 font-semibold">
+                        <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
+                        Acceso Administrador
+                    </button>
+                </div>
+            </form>
+
+            <!-- Form Registro -->
+            <form id="user-register-form" onsubmit="return handleUserRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-reg-name">Nombre y Apellido *</label>
+                    <input type="text" id="user-reg-name" required placeholder="Ej: Lucas Pérez" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-reg-phone">Teléfono / WhatsApp *</label>
+                    <input type="tel" id="user-reg-phone" required placeholder="Ej: 11 1234-5678" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-reg-address">Localidad / Provincia *</label>
+                    <input type="text" id="user-reg-address" required placeholder="Ej: Córdoba Capital" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-reg-email">Email *</label>
+                    <input type="email" id="user-reg-email" required placeholder="tu@email.com" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1" for="user-reg-pass">Contraseña *</label>
+                    <input type="password" id="user-reg-pass" required minlength="4" placeholder="Mínimo 4 caracteres" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">person_add</span>
+                    Registrarme
+                </button>
+            </form>
+        </div>
+
+        <!-- Dynamic Content: User Profile (Logged In) -->
+        <div id="user-modal-logged-in" class="space-y-6 hidden">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full bg-neon/10 border border-neon/30 text-neon flex items-center justify-center mx-auto mb-3 text-2xl font-bold" id="user-profile-avatar">
+                    U
+                </div>
+                <h3 id="user-profile-name" class="text-headline-md font-bold text-on-surface">Nombre Usuario</h3>
+                <p id="user-profile-email" class="text-xs text-on-surface-variant"></p>
+            </div>
+
+            <div class="bg-surface-container p-4 rounded-2xl border border-outline-variant space-y-3 text-xs">
+                <div class="flex items-center justify-between pb-2 border-b border-outline-variant/40">
+                    <span class="text-on-surface-variant flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-neon">call</span> Teléfono:</span>
+                    <span id="user-profile-phone" class="font-semibold text-on-surface"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-on-surface-variant flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-neon">location_on</span> Ubicación:</span>
+                    <span id="user-profile-address" class="font-semibold text-on-surface"></span>
+                </div>
+            </div>
+
+            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-xs text-emerald-400 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">verified</span>
+                <span>Tus datos se autocompletarán automáticamente en la caja al comprar.</span>
+            </div>
+
+            <button onclick="logoutUser()" class="btn-outline w-full py-3 rounded-xl text-xs font-bold text-error border-error/50 hover:bg-error/10 flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Product Form Modal -->
+<div id="product-form-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+    <div class="w-full max-w-2xl bg-surface-container-low border border-outline-variant rounded-3xl p-6 md:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="closeProductFormModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-white p-1 rounded-lg">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="border-b border-outline-variant pb-4">
+            <h3 id="product-form-title" class="text-headline-md font-bold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-neon">edit_note</span>
+                Agregar Nuevo Producto
+            </h3>
+            <p class="text-xs text-on-surface-variant">Completá la información del producto para publicarlo en el catálogo.</p>
+        </div>
+
+        <form onsubmit="return handleSaveProduct(event)" class="space-y-4">
+            <input type="hidden" id="pf-id">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Nombre del Producto *</label>
+                    <input type="text" id="pf-name" required placeholder="Ej: Casco Cyberpunk" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Categoría *</label>
+                    <select id="pf-category" required class="input-field w-full rounded-xl p-3 text-xs bg-surface-container">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Precio ($ ARS) *</label>
+                    <input type="number" id="pf-price" min="0" required placeholder="15000" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Tipo de Producto *</label>
+                    <select id="pf-type" required class="input-field w-full rounded-xl p-3 text-xs bg-surface-container">
+                        <option value="3D">Impresión 3D</option>
+                        <option value="Mate">Mate de Algarrobo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Etiqueta / Badge</label>
+                    <input type="text" id="pf-badge" placeholder="Ej: 3D Print, Destacado" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Código STL / Ref. Art.</label>
+                    <input type="text" id="pf-stlId" placeholder="Ej: STL #1618" class="input-field w-full rounded-xl p-3 text-xs">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Portada Principal *</label>
+                    <input type="text" id="pf-image" required placeholder="URL de imagen/video o cargar..." class="input-field w-full rounded-xl p-3 text-xs" onchange="updateProductImagePreview()">
+                </div>
+            </div>
+
+            <!-- Cover Upload & Preview -->
+            <div class="space-y-2">
+                <div class="flex items-center gap-3 bg-surface-container p-3 rounded-xl border border-outline-variant">
+                    <label class="btn-outline px-3 py-2 rounded-lg text-xs font-bold cursor-pointer flex items-center gap-1.5 hover:bg-surface-bright text-neon border-neon/40">
+                        <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                        Cargar Portada
+                        <input type="file" id="pf-file-input" accept="image/*,video/*" class="hidden" onchange="handleProductImageFile(this)">
+                    </label>
+                    <span class="text-[11px] text-on-surface-variant flex-1">Imagen o video local (Base64). Máx. 10MB.</span>
+                </div>
+                <div id="pf-img-preview-container" class="hidden flex items-center gap-3 p-2 bg-surface-container-high rounded-xl border border-outline-variant">
+                    <img id="pf-img-preview" src="" alt="Vista Previa" class="w-14 h-14 object-cover rounded-lg border border-outline-variant">
+                    <div class="text-xs">
+                        <span class="font-semibold text-on-surface block">Vista previa de portada</span>
+                        <span id="pf-img-info" class="text-[10px] text-on-surface-variant"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery / Multimedia Section -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold text-on-surface uppercase tracking-wide flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-neon text-[16px]">collections</span>
+                        Galería Multimedia (imágenes / videos / YouTube)
+                    </label>
+                    <button type="button" onclick="addGalleryItem()" class="btn-outline px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-neon border-neon/40 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">add</span> Agregar
+                    </button>
+                </div>
+                <div id="pf-gallery-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+                    <!-- Injected by JS -->
+                </div>
+                <p class="text-[10px] text-on-surface-variant">Soporta imágenes (URL o local), MP4/WebM y links de YouTube.</p>
+            </div>
+
+            <div>
+                <label class="block text-xs text-on-surface-variant mb-1">Descripción Detallada *</label>
+                <textarea id="pf-desc" rows="3" required placeholder="Descripción de alta calidad..." class="input-field w-full rounded-xl p-3 text-xs"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs text-on-surface-variant mb-1">Especificaciones Técnicas (Una por línea)</label>
+                <textarea id="pf-specs" rows="3" placeholder="Recomendado para resina&#10;Altura de capa: 0.16mm" class="input-field w-full rounded-xl p-3 text-xs font-mono"></textarea>
+            </div>
+
+            <div class="flex gap-3 pt-4 border-t border-outline-variant">
+                <button type="button" onclick="closeProductFormModal()" class="btn-outline flex-1 py-3 rounded-xl text-xs font-bold">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                    Guardar Producto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Category Form Modal -->
+<div id="category-form-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+    <div class="w-full max-w-md bg-surface-container-low border border-outline-variant rounded-3xl p-6 shadow-2xl space-y-6 relative">
+        <button onclick="closeCategoryModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-white p-1 rounded-lg">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="border-b border-outline-variant pb-3">
+            <h3 id="category-form-title" class="text-headline-md font-bold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-neon">category</span>
+                Agregar Categoría
+            </h3>
+        </div>
+
+        <form onsubmit="return handleSaveCategory(event)" class="space-y-4">
+            <input type="hidden" id="cf-slug-old">
+
+            <div>
+                <label class="block text-xs text-on-surface-variant mb-1">Nombre de Categoría *</label>
+                <input type="text" id="cf-name" required placeholder="Ej: Llaveros 3D" class="input-field w-full rounded-xl p-3 text-xs">
+            </div>
+
+            <div>
+                <label class="block text-xs text-on-surface-variant mb-1">ID Único / Slug (Sin espacios) *</label>
+                <input type="text" id="cf-slug" required placeholder="Ej: llaveros_3d" class="input-field w-full rounded-xl p-3 text-xs font-mono">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Icono (Material Symbol)</label>
+                    <input type="text" id="cf-icon" value="category" placeholder="local_cafe" class="input-field w-full rounded-xl p-3 text-xs font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-on-surface-variant mb-1">Color Temático</label>
+                    <select id="cf-color" class="input-field w-full rounded-xl p-3 text-xs bg-surface-container">
+                        <option value="neon">Azul Neón</option>
+                        <option value="wood">Madera / Ámbar</option>
+                        <option value="emerald-400">Verde Esmeralda</option>
+                        <option value="yellow-400">Amarillo</option>
+                        <option value="purple-400">Púrpura</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-4 border-t border-outline-variant">
+                <button type="button" onclick="closeCategoryModal()" class="btn-outline flex-1 py-3 rounded-xl text-xs font-bold">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-primary flex-1 py-3 rounded-xl text-xs font-bold">
+                    Guardar Categoría
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Toast Notifications Container -->
 <div id="toast-container" class="fixed top-20 right-4 z-[60] flex flex-col gap-3 pointer-events-none"></div>
 
 <!-- ==================== JAVASCRIPT LOGIC ==================== -->
 <script>
-// ===== PRODUCTS DATABASE =====
-const PRODUCTS = [
+// ===== DEFAULT DATABASES =====
+const DEFAULT_CATEGORIES = [
+    { id: "3d_prints", name: "Impresiones 3D", icon: "view_in_ar", color: "neon" },
+    { id: "mates", name: "Mates de Algarrobo", icon: "local_cafe", color: "wood" },
+    { id: "sets", name: "Sets Materos & Yerberas", icon: "inventory_2", color: "yellow-400" },
+    { id: "rpg_props", name: "Props & RPG", icon: "swords", color: "purple-400" },
+    { id: "decoracion", name: "Decoración & Arte", icon: "palette", color: "emerald-400" }
+];
+
+const DEFAULT_PRODUCTS = [
     {
         id: 1,
         name: "Casco Cyberpunk Prop 3D",
@@ -1070,8 +1505,17 @@ const PRODUCTS = [
     }
 ];
 
-// ===== CART & SIDEBAR STATE =====
+// ===== GLOBAL STATE & LOCAL STORAGE =====
+let whatsappNumber = localStorage.getItem('alessios3d_whatsapp') || '5491100000000';
+let adminPassword = localStorage.getItem('alessios3d_admin_pass') || 'admin123';
+let isAdminLoggedIn = sessionStorage.getItem('alessios3d_admin_logged') === 'true';
+
+let CATEGORIES = JSON.parse(localStorage.getItem('alessios3d_categories') || 'null') || DEFAULT_CATEGORIES;
+let PRODUCTS = JSON.parse(localStorage.getItem('alessios3d_products') || 'null') || DEFAULT_PRODUCTS;
 let cart = JSON.parse(localStorage.getItem('alessios3d_cart_v2') || '[]');
+let usersList = JSON.parse(localStorage.getItem('alessios3d_users') || '[]');
+let currentUser = JSON.parse(localStorage.getItem('alessios3d_current_user') || 'null');
+
 let currentCategoryFilter = 'all';
 let subCategoryFilter = '';
 let searchQuery = '';
@@ -1080,12 +1524,60 @@ let isDesktopSidebarCollapsed = false;
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
+    updateWhatsAppLinks();
+    renderSidebarCategories();
+    renderCatalogCategoryFilters();
     renderCatalog();
+    renderTopCarousel();
     updateCartUI();
+    updateAdminUI();
+    updateUserUI();
+    autofillCheckoutForm();
 });
+
+// ===== LOCAL STORAGE SAVERS =====
+function saveProducts() {
+    localStorage.setItem('alessios3d_products', JSON.stringify(PRODUCTS));
+}
+
+function saveCategories() {
+    localStorage.setItem('alessios3d_categories', JSON.stringify(CATEGORIES));
+}
+
+function saveCart() {
+    localStorage.setItem('alessios3d_cart_v2', JSON.stringify(cart));
+}
+
+// ===== DYNAMIC WHATSAPP LINKS =====
+function updateWhatsAppLinks() {
+    const waClean = whatsappNumber.replace(/[^0-9]/g, '');
+    
+    const headerBtn = document.getElementById('header-wa-link');
+    if (headerBtn) headerBtn.href = `https://wa.me/${waClean}?text=${encodeURIComponent('Hola ALESSIOS3D, quiero hacer una consulta')}`;
+
+    const sidebarBannerBtn = document.getElementById('sidebar-wa-link');
+    if (sidebarBannerBtn) sidebarBannerBtn.href = `https://wa.me/${waClean}?text=${encodeURIComponent('Hola, quisiera cotizar un trabajo personalizado')}`;
+
+    const sidebarSupportBtn = document.getElementById('sidebar-support-link');
+    if (sidebarSupportBtn) sidebarSupportBtn.href = `https://wa.me/${waClean}`;
+
+    const footerWaLink = document.getElementById('footer-wa-link');
+    if (footerWaLink) footerWaLink.href = `https://wa.me/${waClean}`;
+
+    const adminTestLink = document.getElementById('admin-wa-test-link');
+    if (adminTestLink) adminTestLink.href = `https://wa.me/${waClean}`;
+
+    const adminWaInput = document.getElementById('admin-wa-input');
+    if (adminWaInput) adminWaInput.value = waClean;
+}
 
 // ===== TAB SWITCHING =====
 function switchTab(tabId) {
+    if (tabId === 'tab-admin' && !isAdminLoggedIn) {
+        openAdminLoginModal();
+        return;
+    }
+
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.top-nav-tab').forEach(btn => btn.classList.remove('active'));
 
@@ -1095,10 +1587,39 @@ function switchTab(tabId) {
     const navBtn = document.getElementById('nav-' + tabId);
     if (navBtn) navBtn.classList.add('active');
 
+    if (tabId === 'tab-checkout') {
+        autofillCheckoutForm();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ===== CATEGORY & SUBCATEGORY FILTERING =====
+function renderSidebarCategories() {
+    const container = document.getElementById('sidebar-dynamic-categories');
+    if (!container) return;
+
+    container.innerHTML = CATEGORIES.map(cat => `
+        <button onclick="filterByCategory('${cat.id}')" class="sidebar-link flex items-center gap-3 text-on-surface-variant px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-surface-container-high transition-all text-left w-full ${currentCategoryFilter === cat.id ? 'active' : ''}" data-cat="${cat.id}" title="${cat.name}">
+            <span class="material-symbols-outlined text-[20px] text-${cat.color || 'neon'} flex-shrink-0">${cat.icon || 'category'}</span>
+            <span class="sidebar-text">${cat.name}</span>
+        </button>
+    `).join('');
+}
+
+function renderCatalogCategoryFilters() {
+    const container = document.getElementById('catalog-quick-filters');
+    if (!container) return;
+
+    let html = `<button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="filterByCategory('all')" data-btncat="all">Todos</button>`;
+    
+    html += CATEGORIES.map(cat => `
+        <button class="btn-outline px-4 py-2 rounded-full text-xs font-semibold ${currentCategoryFilter === cat.id ? 'active' : ''}" onclick="filterByCategory('${cat.id}')" data-btncat="${cat.id}">${cat.name}</button>
+    `).join('');
+
+    container.innerHTML = html;
+}
+
 function filterByCategory(category) {
     currentCategoryFilter = category;
     subCategoryFilter = '';
@@ -1123,12 +1644,11 @@ function filterSubCategory(subName) {
     renderCatalog();
 }
 
-// ===== SIDEBAR DESPLEGABLE & ACCORDION =====
+// ===== SIDEBAR COLLAPSE LOGIC =====
 function toggleDesktopSidebar() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('main-content');
 
-    // Check if on mobile or desktop
     if (window.innerWidth < 1024) {
         toggleMobileSidebar();
         return;
@@ -1142,25 +1662,6 @@ function toggleDesktopSidebar() {
     } else {
         sidebar.classList.remove('collapsed');
         mainContent.classList.remove('collapsed');
-    }
-}
-
-function toggleSubmenu(submenuId, triggerBtn) {
-    const submenu = document.getElementById(submenuId);
-    const arrow = triggerBtn.querySelector('.submenu-arrow');
-
-    // Close other submenus
-    document.querySelectorAll('.submenu').forEach(sm => {
-        if (sm.id !== submenuId) {
-            sm.classList.remove('open');
-            const otherArrow = sm.previousElementSibling?.querySelector('.submenu-arrow');
-            if (otherArrow) otherArrow.style.transform = 'rotate(0deg)';
-        }
-    });
-
-    submenu.classList.toggle('open');
-    if (arrow) {
-        arrow.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 }
 
@@ -1183,27 +1684,28 @@ function handleSearch(query) {
 function renderCatalog() {
     const grid = document.getElementById('catalog-products-grid');
     const emptyState = document.getElementById('catalog-empty');
+    if (!grid) return;
 
     let filtered = PRODUCTS.filter(p => {
         const matchesCategory = (currentCategoryFilter === 'all') || (p.category === currentCategoryFilter);
-        const matchesSub = !subCategoryFilter || p.name.toLowerCase().includes(subCategoryFilter) || p.desc.toLowerCase().includes(subCategoryFilter) || p.badge.toLowerCase().includes(subCategoryFilter);
+        const matchesSub = !subCategoryFilter || p.name.toLowerCase().includes(subCategoryFilter) || p.desc.toLowerCase().includes(subCategoryFilter) || (p.badge && p.badge.toLowerCase().includes(subCategoryFilter));
         const matchesSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery);
         return matchesCategory && matchesSub && matchesSearch;
     });
 
     if (filtered.length === 0) {
         grid.innerHTML = '';
-        emptyState.classList.remove('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
         return;
     }
-    emptyState.classList.add('hidden');
+    if (emptyState) emptyState.classList.add('hidden');
 
     grid.innerHTML = filtered.map(p => `
         <div onclick="openProductModal(${p.id})" class="product-card cursor-pointer bg-surface-container-low border border-outline-variant/70 rounded-2xl overflow-hidden flex flex-col justify-between">
             <div class="relative aspect-[3/4] bg-surface-container overflow-hidden">
                 <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
                 <span class="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md ${p.type === 'Mate' ? 'bg-wood/90 text-white' : 'bg-neon/90 text-white'}">
-                    ${p.badge}
+                    ${p.badge || (p.type === 'Mate' ? 'Algarrobo' : '3D Print')}
                 </span>
             </div>
             <div class="p-4 flex flex-col flex-1 justify-between gap-3">
@@ -1225,6 +1727,27 @@ function renderCatalog() {
     `).join('');
 }
 
+// ===== RENDER TOP CAROUSEL (HOME) =====
+function renderTopCarousel() {
+    const carouselContainer = document.getElementById('top-carousel-container');
+    if (!carouselContainer) return;
+
+    const featured = PRODUCTS.slice(0, 6);
+    carouselContainer.innerHTML = featured.map((p, idx) => `
+        <div class="flex-none w-[260px] sm:w-[280px] md:w-[320px] relative snap-start group cursor-pointer" onclick="openProductModal(${p.id})">
+            <span class="number-bg" style="${p.type === 'Mate' ? 'color: rgba(217,119,6,0.2);' : ''}">${idx + 1}</span>
+            <div class="relative z-10 aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container border border-outline-variant transition-all duration-300 ${p.type === 'Mate' ? 'group-hover:border-wood' : 'group-hover:border-neon'} group-hover:scale-[1.02] shadow-lg">
+                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent p-5 flex flex-col justify-end">
+                    <span class="text-[10px] ${p.type === 'Mate' ? 'text-wood' : 'text-neon'} uppercase tracking-wider font-bold">${p.badge || (p.type === 'Mate' ? 'Mates' : 'Impresión 3D')}</span>
+                    <h3 class="text-headline-md font-bold text-on-surface leading-snug line-clamp-1">${p.name}</h3>
+                    <p class="text-sm font-bold ${p.type === 'Mate' ? 'text-wood' : 'text-neon'} mt-1">$${p.price.toLocaleString('es-AR')}</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
 // ===== PRODUCT MODAL LOGIC =====
 function openProductModal(productId) {
     const p = PRODUCTS.find(prod => prod.id === productId);
@@ -1235,16 +1758,20 @@ function openProductModal(productId) {
     document.getElementById('modal-main-img').src = p.image;
     document.getElementById('modal-title').textContent = p.name;
     document.getElementById('modal-price').textContent = `$${p.price.toLocaleString('es-AR')}`;
-    document.getElementById('modal-category').textContent = p.category.replace('_', ' ');
+    
+    const catObj = CATEGORIES.find(c => c.id === p.category);
+    document.getElementById('modal-category').textContent = catObj ? catObj.name : p.category.replace('_', ' ');
+    
     document.getElementById('modal-stl-id').textContent = p.stlId || `ID #${p.id}`;
-    document.getElementById('modal-badge').textContent = p.badge;
+    document.getElementById('modal-badge').textContent = p.badge || (p.type === 'Mate' ? 'Algarrobo' : '3D Print');
     document.getElementById('modal-badge').className = `absolute top-3 left-3 text-[10px] font-bold px-3 py-1 rounded-full text-white backdrop-blur-md ${p.type === 'Mate' ? 'bg-wood/90' : 'bg-neon/90'}`;
 
     document.getElementById('modal-full-desc').textContent = p.desc;
 
     // Direct whatsapp link
+    const waClean = whatsappNumber.replace(/[^0-9]/g, '');
     const waMsg = `Hola ALESSIOS3D! Quisiera consultar sobre el producto: ${p.name} (${p.stlId || ''})`;
-    document.getElementById('modal-whatsapp-direct').href = `https://wa.me/5491100000000?text=${encodeURIComponent(waMsg)}`;
+    document.getElementById('modal-whatsapp-direct').href = `https://wa.me/${waClean}?text=${encodeURIComponent(waMsg)}`;
 
     // Add to cart button trigger
     const addBtn = document.getElementById('modal-add-cart-btn');
@@ -1254,14 +1781,23 @@ function openProductModal(productId) {
         closeProductModal();
     };
 
-    // Render Thumbnails
+    // Render Thumbnails — supports images & videos
     const thumbsContainer = document.getElementById('modal-thumbs');
-    const imagesList = p.gallery && p.gallery.length > 0 ? p.gallery : [p.image];
-    thumbsContainer.innerHTML = imagesList.map((imgUrl, idx) => `
-        <button onclick="setModalMainImg('${imgUrl}')" class="w-14 h-14 rounded-xl overflow-hidden border border-outline-variant hover:border-neon focus:border-neon flex-shrink-0 bg-black">
-            <img src="${imgUrl}" class="w-full h-full object-cover">
-        </button>
-    `).join('');
+    const mediaList = p.gallery && p.gallery.length > 0 ? p.gallery : [p.image];
+    thumbsContainer.innerHTML = mediaList.map((mUrl, idx) => {
+        const isVid = isVideoMedia(mUrl);
+        const isYT = isYouTubeUrl(mUrl);
+        const thumbSrc = isVid ? '' : (isYT ? getYouTubeThumbnail(mUrl) : mUrl);
+        const playIcon = (isVid || isYT) ? `<span class="absolute inset-0 flex items-center justify-center"><span class="material-symbols-outlined text-white text-[24px] drop-shadow-lg">play_circle</span></span>` : '';
+        return `
+            <button onclick="setModalMainMedia('${escapeStr(mUrl)}')" class="relative w-14 h-14 rounded-xl overflow-hidden border border-outline-variant hover:border-neon focus:border-neon flex-shrink-0 bg-black">
+                ${thumbSrc ? `<img src="${thumbSrc}" class="w-full h-full object-cover">` : `<div class="w-full h-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-neon text-[26px]">videocam</span></div>`}
+                ${playIcon}
+            </button>`;
+    }).join('');
+
+    // Set initial media
+    setModalMainMedia(p.image);
 
     // Render Specs List
     const specsContainer = document.getElementById('modal-specs-list');
@@ -1280,11 +1816,58 @@ function openProductModal(productId) {
     document.body.style.overflow = 'hidden';
 }
 
-function setModalMainImg(url) {
-    document.getElementById('modal-main-img').src = url;
+// ===== MEDIA HELPERS =====
+function isVideoMedia(url) {
+    return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url) || url.startsWith('data:video');
+}
+function isYouTubeUrl(url) {
+    return /youtube\.com\/watch|youtu\.be\//i.test(url);
+}
+function getYouTubeEmbedUrl(url) {
+    const match = url.match(/(?:v=|youtu\.be\/)([\w-]{11})/);
+    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1` : url;
+}
+function getYouTubeThumbnail(url) {
+    const match = url.match(/(?:v=|youtu\.be\/)([\w-]{11})/);
+    return match ? `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg` : '';
+}
+function escapeStr(s) {
+    return s.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+function setModalMainMedia(url) {
+    const img = document.getElementById('modal-main-img');
+    const video = document.getElementById('modal-main-video');
+    const iframe = document.getElementById('modal-main-iframe');
+
+    // Stop any playing video/iframe first
+    video.pause();
+    video.src = '';
+    iframe.src = '';
+
+    img.classList.add('hidden');
+    video.classList.add('hidden');
+    iframe.classList.add('hidden');
+
+    if (isYouTubeUrl(url)) {
+        iframe.src = getYouTubeEmbedUrl(url);
+        iframe.classList.remove('hidden');
+    } else if (isVideoMedia(url)) {
+        video.src = url;
+        video.classList.remove('hidden');
+        video.play().catch(() => {});
+    } else {
+        img.src = url;
+        img.classList.remove('hidden');
+    }
 }
 
 function closeProductModal() {
+    // Stop media on close
+    const video = document.getElementById('modal-main-video');
+    if (video) { video.pause(); video.src = ''; }
+    const iframe = document.getElementById('modal-main-iframe');
+    if (iframe) iframe.src = '';
     document.getElementById('product-modal').classList.add('hidden');
     document.body.style.overflow = 'auto';
 }
@@ -1335,10 +1918,6 @@ function clearCart() {
     updateCartUI();
 }
 
-function saveCart() {
-    localStorage.setItem('alessios3d_cart_v2', JSON.stringify(cart));
-}
-
 function updateCartUI() {
     const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
@@ -1348,30 +1927,34 @@ function updateCartUI() {
     const headerCount = document.getElementById('header-cart-count');
 
     if (totalQty > 0) {
-        navBadge.classList.remove('hidden');
-        navBadge.textContent = totalQty;
-        headerCount.classList.remove('hidden');
-        headerCount.textContent = totalQty;
+        if (navBadge) { navBadge.classList.remove('hidden'); navBadge.textContent = totalQty; }
+        if (headerCount) { headerCount.classList.remove('hidden'); headerCount.textContent = totalQty; }
     } else {
-        navBadge.classList.add('hidden');
-        headerCount.classList.add('hidden');
+        if (navBadge) navBadge.classList.add('hidden');
+        if (headerCount) headerCount.classList.add('hidden');
     }
 
     // Checkout Tab Summary
-    document.getElementById('cart-summary-qty').textContent = totalQty;
-    document.getElementById('cart-summary-subtotal').textContent = `$${subtotal.toLocaleString('es-AR')}`;
-    document.getElementById('cart-summary-total').textContent = `$${subtotal.toLocaleString('es-AR')}`;
+    const summaryQty = document.getElementById('cart-summary-qty');
+    const summarySub = document.getElementById('cart-summary-subtotal');
+    const summaryTot = document.getElementById('cart-summary-total');
+
+    if (summaryQty) summaryQty.textContent = totalQty;
+    if (summarySub) summarySub.textContent = `$${subtotal.toLocaleString('es-AR')}`;
+    if (summaryTot) summaryTot.textContent = `$${subtotal.toLocaleString('es-AR')}`;
 
     // Checkout List Items
     const list = document.getElementById('checkout-cart-list');
     const empty = document.getElementById('checkout-empty');
 
+    if (!list) return;
+
     if (cart.length === 0) {
         list.innerHTML = '';
-        empty.classList.remove('hidden');
+        if (empty) empty.classList.remove('hidden');
         return;
     }
-    empty.classList.add('hidden');
+    if (empty) empty.classList.add('hidden');
 
     list.innerHTML = cart.map(item => `
         <div class="flex items-center gap-4 bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/60">
@@ -1401,10 +1984,21 @@ function sendWhatsAppOrder(e) {
         return false;
     }
 
-    const name = document.getElementById('cust-name').value.trim();
-    const phone = document.getElementById('cust-phone').value.trim();
-    const address = document.getElementById('cust-address').value.trim();
+    let name = document.getElementById('cust-name').value.trim();
+    let phone = document.getElementById('cust-phone').value.trim();
+    let address = document.getElementById('cust-address').value.trim();
     const notes = document.getElementById('cust-notes').value.trim();
+
+    if (currentUser) {
+        if (!name) name = currentUser.name;
+        if (!phone) phone = currentUser.phone;
+        if (!address) address = currentUser.address;
+    }
+
+    if (!name || !phone || !address) {
+        showToast('Por favor completá tus datos de envío', 'error');
+        return false;
+    }
 
     const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
@@ -1421,15 +2015,682 @@ function sendWhatsAppOrder(e) {
     msg += `\n💰 *Total:* $${total.toLocaleString('es-AR')}\n`;
     if (notes) msg += `\n📝 *Notas/Grabado:* ${notes}\n`;
 
-    const number = '5491100000000'; // Replace with real store number
-    const url = `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
+    const waClean = whatsappNumber.replace(/[^0-9]/g, '');
+    const url = `https://wa.me/${waClean}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
+    return false;
+}
+
+// ===== USER AUTHENTICATION & PROFILE =====
+function openUserAuthModal() {
+    updateUserUI();
+    document.getElementById('user-auth-modal').classList.remove('hidden');
+}
+
+function closeUserAuthModal() {
+    document.getElementById('user-auth-modal').classList.add('hidden');
+}
+
+function switchUserAuthTab(tab) {
+    const loginBtn = document.getElementById('user-tab-login-btn');
+    const regBtn = document.getElementById('user-tab-register-btn');
+    const loginForm = document.getElementById('user-login-form');
+    const regForm = document.getElementById('user-register-form');
+
+    if (tab === 'login') {
+        loginBtn.className = "flex-1 pb-3 text-sm font-bold text-neon border-b-2 border-neon text-center";
+        regBtn.className = "flex-1 pb-3 text-sm font-bold text-on-surface-variant hover:text-on-surface text-center";
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+    } else {
+        regBtn.className = "flex-1 pb-3 text-sm font-bold text-neon border-b-2 border-neon text-center";
+        loginBtn.className = "flex-1 pb-3 text-sm font-bold text-on-surface-variant hover:text-on-surface text-center";
+        regForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+    }
+}
+
+function handleUserRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('user-reg-name').value.trim();
+    const phone = document.getElementById('user-reg-phone').value.trim();
+    const address = document.getElementById('user-reg-address').value.trim();
+    const email = document.getElementById('user-reg-email').value.trim().toLowerCase();
+    const pass = document.getElementById('user-reg-pass').value.trim();
+
+    if (usersList.some(u => u.email === email)) {
+        showToast('Ya existe un usuario registrado con ese email', 'error');
+        return false;
+    }
+
+    const newUser = { name, phone, address, email, pass };
+    usersList.push(newUser);
+    localStorage.setItem('alessios3d_users', JSON.stringify(usersList));
+
+    currentUser = newUser;
+    localStorage.setItem('alessios3d_current_user', JSON.stringify(currentUser));
+
+    updateUserUI();
+    closeUserAuthModal();
+    autofillCheckoutForm();
+    showToast(`¡Bienvenido/a ${name}! Cuenta creada con éxito.`, 'success');
+    return false;
+}
+
+function handleUserLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('user-login-email').value.trim().toLowerCase();
+    const pass = document.getElementById('user-login-pass').value.trim();
+
+    const user = usersList.find(u => u.email === email && u.pass === pass);
+    if (!user) {
+        showToast('Email o contraseña incorrectos', 'error');
+        return false;
+    }
+
+    currentUser = user;
+    localStorage.setItem('alessios3d_current_user', JSON.stringify(currentUser));
+
+    updateUserUI();
+    closeUserAuthModal();
+    autofillCheckoutForm();
+    showToast(`¡Hola de nuevo, ${user.name}!`, 'success');
+    return false;
+}
+
+function logoutUser() {
+    currentUser = null;
+    localStorage.removeItem('alessios3d_current_user');
+    updateUserUI();
+    closeUserAuthModal();
+    autofillCheckoutForm();
+    showToast('Sesión de usuario cerrada', 'info');
+}
+
+function updateUserUI() {
+    const btn = document.getElementById('btn-unified-account');
+    const icon = document.getElementById('unified-account-icon');
+    const label = document.getElementById('unified-account-label');
+    const loggedOutView = document.getElementById('user-modal-logged-out');
+    const loggedInView = document.getElementById('user-modal-logged-in');
+
+    if (isAdminLoggedIn) {
+        // Admin mode — neon style, admin icon
+        if (btn) btn.className = 'btn-outline px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 text-neon border-neon bg-neon/10';
+        if (icon) icon.textContent = 'admin_panel_settings';
+        if (label) label.textContent = 'Admin';
+        if (loggedOutView) loggedOutView.classList.remove('hidden');
+        if (loggedInView) loggedInView.classList.add('hidden');
+    } else if (currentUser) {
+        // Regular user logged in
+        if (btn) btn.className = 'btn-outline px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border-neon/40 text-neon hover:bg-neon/10';
+        if (icon) icon.textContent = 'account_circle';
+        if (label) label.textContent = currentUser.name.split(' ')[0];
+        if (loggedOutView) loggedOutView.classList.add('hidden');
+        if (loggedInView) loggedInView.classList.remove('hidden');
+
+        const av = document.getElementById('user-profile-avatar');
+        const nm = document.getElementById('user-profile-name');
+        const em = document.getElementById('user-profile-email');
+        const ph = document.getElementById('user-profile-phone');
+        const ad = document.getElementById('user-profile-address');
+        if (av) av.textContent = currentUser.name.charAt(0).toUpperCase();
+        if (nm) nm.textContent = currentUser.name;
+        if (em) em.textContent = currentUser.email;
+        if (ph) ph.textContent = currentUser.phone;
+        if (ad) ad.textContent = currentUser.address;
+    } else {
+        // Not logged in
+        if (btn) btn.className = 'btn-outline px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5';
+        if (icon) icon.textContent = 'account_circle';
+        if (label) label.textContent = 'Ingresar';
+        if (loggedOutView) loggedOutView.classList.remove('hidden');
+        if (loggedInView) loggedInView.classList.add('hidden');
+    }
+}
+
+function autofillCheckoutForm() {
+    const nameInput = document.getElementById('cust-name');
+    const phoneInput = document.getElementById('cust-phone');
+    const addressInput = document.getElementById('cust-address');
+    const badge = document.getElementById('checkout-autofill-badge');
+    const lblReqName = document.getElementById('lbl-req-name');
+    const lblReqPhone = document.getElementById('lbl-req-phone');
+    const lblReqAddress = document.getElementById('lbl-req-address');
+
+    if (currentUser) {
+        if (nameInput) {
+            nameInput.value = currentUser.name;
+            nameInput.removeAttribute('required');
+        }
+        if (phoneInput) {
+            phoneInput.value = currentUser.phone;
+            phoneInput.removeAttribute('required');
+        }
+        if (addressInput) {
+            addressInput.value = currentUser.address;
+            addressInput.removeAttribute('required');
+        }
+        if (badge) {
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+
+        if (lblReqName) {
+            lblReqName.textContent = '(Guardado/Opcional)';
+            lblReqName.className = 'text-emerald-400 text-[10px] font-semibold ml-1';
+        }
+        if (lblReqPhone) {
+            lblReqPhone.textContent = '(Guardado/Opcional)';
+            lblReqPhone.className = 'text-emerald-400 text-[10px] font-semibold ml-1';
+        }
+        if (lblReqAddress) {
+            lblReqAddress.textContent = '(Guardado/Opcional)';
+            lblReqAddress.className = 'text-emerald-400 text-[10px] font-semibold ml-1';
+        }
+    } else {
+        if (badge) {
+            badge.classList.add('hidden');
+            badge.classList.remove('flex');
+        }
+
+        if (nameInput) nameInput.setAttribute('required', 'true');
+        if (phoneInput) phoneInput.setAttribute('required', 'true');
+        if (addressInput) addressInput.setAttribute('required', 'true');
+
+        if (lblReqName) {
+            lblReqName.textContent = '*';
+            lblReqName.className = 'text-error';
+        }
+        if (lblReqPhone) {
+            lblReqPhone.textContent = '*';
+            lblReqPhone.className = 'text-error';
+        }
+        if (lblReqAddress) {
+            lblReqAddress.textContent = '*';
+            lblReqAddress.className = 'text-error';
+        }
+    }
+}
+
+// ===== PRODUCT COVER FILE UPLOAD =====
+function handleProductImageFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+
+    if (!isImage && !isVideo) {
+        showToast('Seleccioná una imagen o video válido', 'error');
+        return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+        showToast('El archivo es demasiado grande (máximo 10MB)', 'error');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('pf-image').value = e.target.result;
+        updateProductImagePreview();
+        showToast(`${isVideo ? 'Video' : 'Imagen'} de portada cargado/a`, 'success');
+    };
+    reader.readAsDataURL(file);
+}
+
+function updateProductImagePreview() {
+    const url = document.getElementById('pf-image').value.trim();
+    const container = document.getElementById('pf-img-preview-container');
+    const img = document.getElementById('pf-img-preview');
+    const info = document.getElementById('pf-img-info');
+    if (!container) return;
+
+    if (url) {
+        container.classList.remove('hidden');
+        if (url.startsWith('data:video') || isVideoMedia(url)) {
+            img.src = '';
+            img.style.display = 'none';
+            container.querySelector('#pf-img-preview').insertAdjacentHTML('afterend',
+                `<div id="pf-video-badge" class="w-14 h-14 rounded-lg border border-outline-variant bg-surface-container flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-neon text-[28px]">videocam</span></div>`);
+        } else {
+            const badge = document.getElementById('pf-video-badge');
+            if (badge) badge.remove();
+            img.style.display = '';
+            img.src = isYouTubeUrl(url) ? getYouTubeThumbnail(url) : url;
+        }
+        if (info) info.textContent = url.startsWith('data:') ? 'Archivo local (Base64)' : isYouTubeUrl(url) ? 'Enlace de YouTube' : isVideoMedia(url) ? 'Video externo' : 'Imagen externa';
+    } else {
+        container.classList.add('hidden');
+    }
+}
+
+// ===== GALLERY MANAGEMENT =====
+let galleryItems = [];
+
+function renderGalleryInputs() {
+    const list = document.getElementById('pf-gallery-list');
+    if (!list) return;
+    if (galleryItems.length === 0) {
+        list.innerHTML = `<p class="text-[11px] text-on-surface-variant italic text-center py-2">No hay elementos en la galería. La portada se usará automáticamente.</p>`;
+        return;
+    }
+    list.innerHTML = galleryItems.map((item, idx) => {
+        const isVid = isVideoMedia(item) || item.startsWith('data:video');
+        const isYT = isYouTubeUrl(item);
+        const thumbSrc = isYT ? getYouTubeThumbnail(item) : (isVid ? '' : item);
+        return `
+            <div class="flex items-center gap-2 bg-surface-container p-2 rounded-xl border border-outline-variant group">
+                <div class="w-10 h-10 rounded-lg overflow-hidden bg-black flex-shrink-0 border border-outline-variant flex items-center justify-center">
+                    ${thumbSrc ? `<img src="${thumbSrc}" class="w-full h-full object-cover">` : `<span class="material-symbols-outlined text-neon text-[20px]">videocam</span>`}
+                </div>
+                <input type="text" value="${item.startsWith('data:') ? '[Archivo local]' : item}" 
+                    class="input-field flex-1 rounded-lg px-2 py-1.5 text-[11px] font-mono" 
+                    placeholder="URL de imagen, video o YouTube..."
+                    oninput="updateGalleryItemUrl(${idx}, this.value)" 
+                    ${item.startsWith('data:') ? 'readonly title="Archivo local cargado"' : ''}>
+                <label class="cursor-pointer text-on-surface-variant hover:text-neon transition-colors" title="Cargar archivo">
+                    <span class="material-symbols-outlined text-[18px]">upload</span>
+                    <input type="file" accept="image/*,video/*" class="hidden" onchange="handleGalleryFileUpload(${idx}, this)">
+                </label>
+                <button type="button" onclick="removeGalleryItem(${idx})" class="text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+            </div>`;
+    }).join('');
+}
+
+function addGalleryItem() {
+    galleryItems.push('');
+    renderGalleryInputs();
+}
+
+function removeGalleryItem(idx) {
+    galleryItems.splice(idx, 1);
+    renderGalleryInputs();
+}
+
+function updateGalleryItemUrl(idx, value) {
+    galleryItems[idx] = value;
+}
+
+function handleGalleryFileUpload(idx, input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { showToast('Archivo demasiado grande (máx. 10MB)', 'error'); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        galleryItems[idx] = e.target.result;
+        renderGalleryInputs();
+        showToast('Archivo de galería cargado', 'success');
+    };
+    reader.readAsDataURL(file);
+}
+
+// ===== ADMIN AUTHENTICATION & UI =====
+function openAdminLoginModal() {
+    if (isAdminLoggedIn) {
+        switchTab('tab-admin');
+        return;
+    }
+    const err = document.getElementById('admin-login-error');
+    if (err) err.classList.add('hidden');
+    document.getElementById('admin-login-modal').classList.remove('hidden');
+}
+
+function closeAdminLoginModal() {
+    document.getElementById('admin-login-modal').classList.add('hidden');
+}
+
+function handleAdminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('admin-user-input').value.trim();
+    const pass = document.getElementById('admin-pass-input').value.trim();
+
+    if (user === 'admin' && pass === adminPassword) {
+        isAdminLoggedIn = true;
+        sessionStorage.setItem('alessios3d_admin_logged', 'true');
+        closeAdminLoginModal();
+        updateAdminUI();
+        switchTab('tab-admin');
+        showToast('Sesión de Administrador iniciada', 'success');
+    } else {
+        const err = document.getElementById('admin-login-error');
+        if (err) err.classList.remove('hidden');
+    }
+    return false;
+}
+
+function logoutAdmin() {
+    isAdminLoggedIn = false;
+    sessionStorage.removeItem('alessios3d_admin_logged');
+    updateAdminUI();
+    switchTab('tab-inicio');
+    showToast('Sesión admin cerrada', 'info');
+}
+
+function handleUnifiedAccountBtn() {
+    if (isAdminLoggedIn) {
+        switchTab('tab-admin');
+    } else {
+        openUserAuthModal();
+    }
+}
+
+function updateAdminUI() {
+    const navTab = document.getElementById('nav-tab-admin');
+    if (isAdminLoggedIn) {
+        if (navTab) navTab.classList.remove('hidden');
+        renderAdminTables();
+    } else {
+        if (navTab) navTab.classList.add('hidden');
+    }
+    // Sync unified button to reflect latest state
+    updateUserUI();
+}
+
+function renderAdminTables() {
+    // Products Table
+    const body = document.getElementById('admin-products-table-body');
+    const countEl = document.getElementById('admin-products-count');
+
+    if (countEl) countEl.textContent = PRODUCTS.length;
+
+    if (body) {
+        body.innerHTML = PRODUCTS.map(p => {
+            const catObj = CATEGORIES.find(c => c.id === p.category);
+            const catName = catObj ? catObj.name : p.category;
+            return `
+                <tr class="hover:bg-surface-container-high/50 transition-colors">
+                    <td class="py-3 px-2 flex items-center gap-3">
+                        <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg bg-black flex-shrink-0" alt="${p.name}">
+                        <div>
+                            <span class="font-bold block text-on-surface truncate max-w-[180px]">${p.name}</span>
+                            <span class="text-[10px] text-on-surface-variant">${p.stlId || ('ID #' + p.id)}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-2 text-on-surface-variant">${catName}</td>
+                    <td class="py-3 px-2 font-bold text-neon">$${p.price.toLocaleString('es-AR')}</td>
+                    <td class="py-3 px-2">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${p.type === 'Mate' ? 'bg-wood/20 text-wood border border-wood/30' : 'bg-neon/20 text-neon border border-neon/30'}">
+                            ${p.type || '3D'}
+                        </span>
+                    </td>
+                    <td class="py-3 px-2 text-right">
+                        <div class="flex items-center justify-end gap-1">
+                            <button onclick="openProductModalForEdit(${p.id})" class="p-1.5 text-on-surface-variant hover:text-neon transition-colors" title="Editar">
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                            </button>
+                            <button onclick="deleteProduct(${p.id})" class="p-1.5 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // Categories List
+    const catList = document.getElementById('admin-categories-list');
+    if (catList) {
+        catList.innerHTML = CATEGORIES.map(cat => `
+            <div class="flex items-center justify-between p-2.5 bg-surface-container rounded-xl border border-outline-variant/60">
+                <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-${cat.color || 'neon'} text-[20px]">${cat.icon || 'category'}</span>
+                    <div>
+                        <span class="text-xs font-bold text-on-surface block">${cat.name}</span>
+                        <span class="text-[10px] text-on-surface-variant font-mono">${cat.id}</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button onclick="openCategoryModalForEdit('${cat.id}')" class="p-1 text-on-surface-variant hover:text-neon" title="Editar">
+                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                    </button>
+                    <button onclick="deleteCategory('${cat.id}')" class="p-1 text-on-surface-variant hover:text-error" title="Eliminar">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// ===== PRODUCT FORM & CRUD =====
+function populateCategorySelect() {
+    const select = document.getElementById('pf-category');
+    if (!select) return;
+    select.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function openProductModalForCreate() {
+    populateCategorySelect();
+    document.getElementById('product-form-title').innerHTML = `<span class="material-symbols-outlined text-neon">add_circle</span> Agregar Nuevo Producto`;
+    document.getElementById('pf-id').value = '';
+    document.getElementById('pf-name').value = '';
+    document.getElementById('pf-price').value = '';
+    document.getElementById('pf-type').value = '3D';
+    document.getElementById('pf-badge').value = '3D Print';
+    document.getElementById('pf-stlId').value = '';
+    document.getElementById('pf-image').value = '';
+    document.getElementById('pf-desc').value = '';
+    document.getElementById('pf-specs').value = '';
+    const fileInput = document.getElementById('pf-file-input');
+    if (fileInput) fileInput.value = '';
+    galleryItems = [];
+    renderGalleryInputs();
+    updateProductImagePreview();
+    document.getElementById('product-form-modal').classList.remove('hidden');
+}
+
+function openProductModalForEdit(id) {
+    const p = PRODUCTS.find(prod => prod.id === id);
+    if (!p) return;
+
+    populateCategorySelect();
+    document.getElementById('product-form-title').innerHTML = `<span class="material-symbols-outlined text-neon">edit</span> Editar Producto`;
+    document.getElementById('pf-id').value = p.id;
+    document.getElementById('pf-name').value = p.name;
+    document.getElementById('pf-category').value = p.category;
+    document.getElementById('pf-price').value = p.price;
+    document.getElementById('pf-type').value = p.type || '3D';
+    document.getElementById('pf-badge').value = p.badge || '';
+    document.getElementById('pf-stlId').value = p.stlId || '';
+    document.getElementById('pf-image').value = p.image;
+    document.getElementById('pf-desc').value = p.desc;
+    document.getElementById('pf-specs').value = (p.specs || []).join('\n');
+    const fileInput = document.getElementById('pf-file-input');
+    if (fileInput) fileInput.value = '';
+    // Load existing gallery (exclude cover image from gallery display)
+    galleryItems = p.gallery && p.gallery.length > 1 ? p.gallery.filter((_, i) => i > 0) : (p.gallery || []);
+    renderGalleryInputs();
+    updateProductImagePreview();
+
+    document.getElementById('product-form-modal').classList.remove('hidden');
+}
+
+function closeProductFormModal() {
+    document.getElementById('product-form-modal').classList.add('hidden');
+}
+
+function handleSaveProduct(e) {
+    e.preventDefault();
+
+    const idVal = document.getElementById('pf-id').value;
+    const name = document.getElementById('pf-name').value.trim();
+    const category = document.getElementById('pf-category').value;
+    const price = parseFloat(document.getElementById('pf-price').value);
+    const type = document.getElementById('pf-type').value;
+    const badge = document.getElementById('pf-badge').value.trim() || (type === 'Mate' ? 'Algarrobo' : '3D Print');
+    const stlId = document.getElementById('pf-stlId').value.trim();
+    const image = document.getElementById('pf-image').value.trim();
+    const desc = document.getElementById('pf-desc').value.trim();
+    const specsRaw = document.getElementById('pf-specs').value.trim();
+    const specs = specsRaw ? specsRaw.split('\n').map(s => s.trim()).filter(Boolean) : [];
+    // Build gallery: cover first, then extra gallery items
+    const extraGallery = galleryItems.filter(g => g && g.trim());
+    const gallery = [image, ...extraGallery];
+
+    if (idVal) {
+        const pId = parseInt(idVal);
+        const index = PRODUCTS.findIndex(p => p.id === pId);
+        if (index !== -1) {
+            PRODUCTS[index] = { ...PRODUCTS[index], name, category, price, type, badge, stlId, image, desc, specs, gallery };
+            showToast('Producto actualizado exitosamente', 'success');
+        }
+    } else {
+        const newId = PRODUCTS.length > 0 ? Math.max(...PRODUCTS.map(p => p.id)) + 1 : 1;
+        PRODUCTS.push({ id: newId, name, category, price, type, badge, stlId: stlId || `ART #${newId}`, image, gallery, desc, specs });
+        showToast('Producto creado exitosamente', 'success');
+    }
+
+    saveProducts();
+    closeProductFormModal();
+    renderAdminTables();
+    renderCatalog();
+    renderTopCarousel();
+    return false;
+}
+
+function deleteProduct(id) {
+    const p = PRODUCTS.find(prod => prod.id === id);
+    if (!p) return;
+    if (confirm(`¿Estás seguro de que deseas eliminar el producto "${p.name}"?`)) {
+        PRODUCTS = PRODUCTS.filter(prod => prod.id !== id);
+        saveProducts();
+        renderAdminTables();
+        renderCatalog();
+        renderTopCarousel();
+        showToast('Producto eliminado', 'info');
+    }
+}
+
+// ===== CATEGORY FORM & CRUD =====
+function openCategoryModal() {
+    document.getElementById('category-form-title').innerHTML = `<span class="material-symbols-outlined text-neon">category</span> Agregar Categoría`;
+    document.getElementById('cf-slug-old').value = '';
+    document.getElementById('cf-name').value = '';
+    document.getElementById('cf-slug').value = '';
+    document.getElementById('cf-slug').disabled = false;
+    document.getElementById('cf-icon').value = 'category';
+    document.getElementById('cf-color').value = 'neon';
+    document.getElementById('category-form-modal').classList.remove('hidden');
+}
+
+function openCategoryModalForEdit(slug) {
+    const cat = CATEGORIES.find(c => c.id === slug);
+    if (!cat) return;
+
+    document.getElementById('category-form-title').innerHTML = `<span class="material-symbols-outlined text-neon">edit</span> Editar Categoría`;
+    document.getElementById('cf-slug-old').value = cat.id;
+    document.getElementById('cf-name').value = cat.name;
+    document.getElementById('cf-slug').value = cat.id;
+    document.getElementById('cf-slug').disabled = true;
+    document.getElementById('cf-icon').value = cat.icon || 'category';
+    document.getElementById('cf-color').value = cat.color || 'neon';
+    document.getElementById('category-form-modal').classList.remove('hidden');
+}
+
+function closeCategoryModal() {
+    document.getElementById('category-form-modal').classList.add('hidden');
+}
+
+function handleSaveCategory(e) {
+    e.preventDefault();
+    const slugOld = document.getElementById('cf-slug-old').value;
+    const name = document.getElementById('cf-name').value.trim();
+    const slug = document.getElementById('cf-slug').value.trim().toLowerCase().replace(/\s+/g, '_');
+    const icon = document.getElementById('cf-icon').value.trim() || 'category';
+    const color = document.getElementById('cf-color').value;
+
+    if (slugOld) {
+        // Edit
+        const cat = CATEGORIES.find(c => c.id === slugOld);
+        if (cat) {
+            cat.name = name;
+            cat.icon = icon;
+            cat.color = color;
+            showToast('Categoría actualizada', 'success');
+        }
+    } else {
+        // Create
+        if (CATEGORIES.some(c => c.id === slug)) {
+            showToast('El ID de categoría ya existe', 'error');
+            return false;
+        }
+        CATEGORIES.push({ id: slug, name, icon, color });
+        showToast('Categoría agregada', 'success');
+    }
+
+    saveCategories();
+    closeCategoryModal();
+    renderSidebarCategories();
+    renderCatalogCategoryFilters();
+    renderAdminTables();
+    return false;
+}
+
+function deleteCategory(slug) {
+    const cat = CATEGORIES.find(c => c.id === slug);
+    if (!cat) return;
+
+    const assignedCount = PRODUCTS.filter(p => p.category === slug).length;
+    if (assignedCount > 0) {
+        if (!confirm(`La categoría "${cat.name}" tiene ${assignedCount} producto(s) asignado(s). ¿Deseas eliminarla de todas formas?`)) {
+            return;
+        }
+    } else if (!confirm(`¿Eliminar la categoría "${cat.name}"?`)) {
+        return;
+    }
+
+    CATEGORIES = CATEGORIES.filter(c => c.id !== slug);
+    saveCategories();
+    renderSidebarCategories();
+    renderCatalogCategoryFilters();
+    renderAdminTables();
+    showToast('Categoría eliminada', 'info');
+}
+
+// ===== WHATSAPP & PASSWORD CONFIG =====
+function saveWhatsAppConfig() {
+    const val = document.getElementById('admin-wa-input').value.trim();
+    if (!val) {
+        showToast('Ingresá un número válido', 'error');
+        return;
+    }
+    whatsappNumber = val.replace(/[^0-9]/g, '');
+    localStorage.setItem('alessios3d_whatsapp', whatsappNumber);
+    updateWhatsAppLinks();
+    showToast('Número de WhatsApp guardado', 'success');
+}
+
+function handlePasswordChange(e) {
+    e.preventDefault();
+    const curr = document.getElementById('admin-pass-current').value.trim();
+    const newP = document.getElementById('admin-pass-new').value.trim();
+
+    if (curr !== adminPassword) {
+        showToast('Contraseña actual incorrecta', 'error');
+        return false;
+    }
+
+    if (newP.length < 4) {
+        showToast('La nueva contraseña debe tener al menos 4 caracteres', 'error');
+        return false;
+    }
+
+    adminPassword = newP;
+    localStorage.setItem('alessios3d_admin_pass', adminPassword);
+    document.getElementById('admin-pass-current').value = '';
+    document.getElementById('admin-pass-new').value = '';
+    showToast('Contraseña cambiada exitosamente', 'success');
     return false;
 }
 
 // ===== TOAST SYSTEM =====
 function showToast(msg, type = 'success') {
     const container = document.getElementById('toast-container');
+    if (!container) return;
     const toast = document.createElement('div');
     toast.className = `toast pointer-events-auto flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md ${type === 'success' ? 'bg-neon text-white' : 'bg-surface-container-high text-on-surface border border-outline-variant'}`;
     toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'success' ? 'check_circle' : 'info'}</span> ${msg}`;
